@@ -1,0 +1,22 @@
+.header{
+    background-color:#0AB28B;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    padding: 20px 0;
+    width: 100%;
+    /* display: flex;
+    justify-content: space-between; */
+}
+.header_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.container{
+    background-color:#0AB28B;
+}
+.btn{
+    background-color: #0b5a04cd;
+}
