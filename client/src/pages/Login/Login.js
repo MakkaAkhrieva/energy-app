@@ -7,6 +7,9 @@ import { Link, Navigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +17,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const { store } = useContext(Context);
+  const [open, setOpen] = useState(false);
 
   if (store.isAuth) {
     return <Navigate to={"/"} />;
@@ -31,7 +35,12 @@ const Login = () => {
       setPasswordError(true);
     }
     if (email && password) {
-      store.login(email, password);
+      store.login(email, password).then(() => {
+        if (!!store.isError) {
+          setOpen(true);
+        }
+      });
+      setOpen(false);
     }
   };
   return (
@@ -75,24 +84,51 @@ const Login = () => {
             value={password}
             error={passwordError}
           />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#0AB28B",
-              marginTop: "78px",
-              borderRadius: "30px",
-              height: "60px",
-              color: "white",
-              fontFamily: "Poppins",
-              fontStyle: "normal",
-              fontWeight: "400",
-              fontSize: "22px",
-            }}
-            type="submit"
-            /* onClick={() => store.login(email, password)} */
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={() => setOpen(!open)}
           >
-            Log in
-          </Button>
+            <Alert onClose={() => setOpen(!open)} severity="error">
+              {store.isError}
+            </Alert>
+          </Snackbar>
+
+          {store.isLoading ? (
+            <LoadingButton
+              loading={store.isLoading}
+              loadingIndicator="Loading…"
+              variant="outlined"
+              sx={{
+                backgroundColor: "#C9B8B8",
+                marginTop: "78px",
+                borderRadius: "30px",
+                height: "60px",
+                fontFamily: "Poppins",
+                fontStyle: "normal",
+                fontWeight: "400",
+                fontSize: "22px",
+              }}
+            ></LoadingButton>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#0AB28B",
+                marginTop: "78px",
+                borderRadius: "30px",
+                height: "60px",
+                color: "white",
+                fontFamily: "Poppins",
+                fontStyle: "normal",
+                fontWeight: "400",
+                fontSize: "22px",
+              }}
+              type="submit"
+            >
+              LOG IN
+            </Button>
+          )}
         </form>
         <p className={styles.p}>Don't have an account?</p>
         <Link to="/registration">

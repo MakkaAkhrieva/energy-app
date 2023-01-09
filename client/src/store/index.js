@@ -28,6 +28,7 @@ export default class Store {
   }
 
   async login(email, password) {
+    this.setLoading(true);
     try {
       const response = await AuthService.login(email, password);
       console.log(response);
@@ -37,6 +38,8 @@ export default class Store {
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);
+    } finally {
+      this.setLoading(false);
     }
   }
 
