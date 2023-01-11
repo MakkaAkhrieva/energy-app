@@ -9,6 +9,17 @@
     background-color: #C9B8B8;
 }
 .addressSearchContainer{
-    width: 75%;
+    width: 100%;
     display: flex;
+}
+.selected{
+    background-color: #C9B8B8;
+    border:2px solid black;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 250px;
+}
+.selected:hover{
+    background-color: #0AB28B;
+    color: black;
 }

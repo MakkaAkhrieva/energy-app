@@ -23,10 +23,24 @@ app.use(errorMidleware);
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.DB_URL, {
+    /* await mongoose.connect(process.env.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
+    }); */
+    await mongoose.connect(
+      "mongodb://localhost:27017/energyApp",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      (err) => {
+        if (!err) {
+          console.log("MongoDB Connection Succeeded.");
+        } else {
+          console.log("Error in DB connection : " + err);
+        }
+      }
+    );
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
