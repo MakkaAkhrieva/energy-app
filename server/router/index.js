@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as userController from "../controllers/user-controller.js";
 import { body } from "express-validator";
 import authMiddleware from "../middlewares/auth-middleware.js";
+import adminMiddleware from "../middlewares/admin-middleware.js";
 
 const router = new Router();
 
@@ -15,6 +16,6 @@ router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
-router.get("/users",authMiddleware, userController.getUsers);
+router.get("/users", authMiddleware, adminMiddleware, userController.getUsers);
 
 export default router;

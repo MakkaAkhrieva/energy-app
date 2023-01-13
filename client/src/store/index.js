@@ -33,6 +33,7 @@ export default class Store {
       const response = await AuthService.login(email, password);
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (error) {
@@ -49,6 +50,7 @@ export default class Store {
       const response = await AuthService.registration(email, password);
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (error) {
@@ -64,6 +66,7 @@ export default class Store {
       const response = await AuthService.logout();
       console.log(response);
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       this.setAuth(false);
       this.setUser({});
     } catch (error) {
@@ -80,6 +83,7 @@ export default class Store {
       });
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
     } catch (error) {

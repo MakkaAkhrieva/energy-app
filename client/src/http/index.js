@@ -29,9 +29,12 @@ $api.interceptors.response.use(
           withCredentials: true,
         });
         localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("role", response.data.user.role);
         return $api.request(originalRequest);
       } catch (e) {
         console.log("НЕ АВТОРИЗОВАН");
+        localStorage.clear();
+        window.location = "/login";
       }
     }
     throw error;

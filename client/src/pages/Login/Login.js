@@ -3,7 +3,7 @@ import styles from "./Login.module.css";
 import imglogin3 from "./imglogin3.jpg";
 import Button from "@mui/material/Button";
 import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
@@ -18,8 +18,13 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState(false);
   const { store } = useContext(Context);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  if (store.isAuth) {
+  const goBack = () => navigate(-1);
+
+  if (store.isAuth && store.user.role === "admin") {
+    return <Navigate to={"/admin"} />;
+  } else if (store.isAuth) {
     return <Navigate to={"/"} />;
   }
   const handleSubmit = (e) => {
@@ -134,6 +139,7 @@ const Login = () => {
         <Link to="/registration">
           <p className={styles.signup}>SIGN UP</p>
         </Link>
+        <button onClick={goBack}>Go back</button>
       </div>
       <div className={styles.card_wrapper}>
         <img src={imglogin3} alt="dsfdgs" className={styles.img} />

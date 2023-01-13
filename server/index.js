@@ -28,7 +28,7 @@ const start = async () => {
       useUnifiedTopology: true,
     }); */
     await mongoose.connect(
-      "mongodb://localhost:27017/energyApp",
+      "mongodb://127.0.0.1:27017/energyApp",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
