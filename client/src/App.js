@@ -17,15 +17,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         {/* <Route path="/admin" element={<AdminDashboard />} /> */}
-        <Route
-          path="/user"
-          element={
-            <AuthRequired>
-              <OnlyAuth />
-              <Route path="/userA" element={<Page404 />} />
-            </AuthRequired>
-          }
-        />
+        <Route element={<AuthRequired />}>
+          <Route path="/user" element={<OnlyAuth />} />
+          <Route path="/page" element={<Page404 />} />
+        </Route>
         <Route
           path="/admin"
           element={

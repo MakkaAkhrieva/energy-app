@@ -1,5 +1,5 @@
 import React from "react";
 
 export const OnlyAuth = () => {
-  return <p>Only auth</p>;
+  return <h1 style={{ color: "black" }}> Only auth </h1>;
 };
