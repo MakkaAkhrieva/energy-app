@@ -3,7 +3,7 @@ export const appRoutes = {
   LOGIN: "/login",
   REGISTRATION: "/registration",
   USER: "/user",
-  PAGE: "/page",
+  USER_PAGE: "/user/page",
   ADMIN: "/admin",
   UNKNOWN: "*",
 };

@@ -1,7 +1,8 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import { GoogleMap, MarkerClusterer, MarkerF } from "@react-google-maps/api";
 import styles from "./Map.module.css";
 import { defaultTheme } from "./Theme";
+import MapService from "../../services/MapService";
 
 const containerStyle = {
   width: "100%",
@@ -18,6 +19,7 @@ export const MODES = {
 };
 
 const Maps = ({ center, mode, markers, onMarkerAdd }) => {
+  const [stations, setStations] = useState([]);
   const mapRef = useRef(undefined);
   const onLoad = useCallback(function callback(map) {
     mapRef.current = map; //ссылка на саму карту
@@ -30,6 +32,18 @@ const Maps = ({ center, mode, markers, onMarkerAdd }) => {
     console.log("marker: ", marker);
   };
 
+  useEffect(() => {
+    async function getStations() {
+      try {
+        const response = await MapService.fetchMaps();
+        console.log("DATA", response.data);
+        setStations(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getStations();
+  }, []);
   const onClick = useCallback(
     (loc) => {
       //loc объет гугла с координатами
@@ -47,7 +61,7 @@ const Maps = ({ center, mode, markers, onMarkerAdd }) => {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={13}
+        zoom={12}
         onLoad={onLoad}
         onUnmount={onUnmount}
         options={defaultOptions}
@@ -56,6 +70,9 @@ const Maps = ({ center, mode, markers, onMarkerAdd }) => {
         <MarkerF onLoad={onLoadMarker} position={center} />
         {markers.map((pos) => {
           return <MarkerF position={pos} />;
+        })}
+        {stations.map((pos) => {
+          return <MarkerF position={pos.location} />;
         })}
       </GoogleMap>
     </div>

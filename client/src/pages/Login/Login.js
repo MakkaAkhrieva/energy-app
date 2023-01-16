@@ -22,9 +22,7 @@ const Login = () => {
 
   const goBack = () => navigate(-1);
 
-  if (store.isAuth && store.user.role === "admin") {
-    return <Navigate to={"/admin"} />;
-  } else if (store.isAuth) {
+  if (store.isAuth) {
     return <Navigate to={"/"} />;
   }
   const handleSubmit = (e) => {
