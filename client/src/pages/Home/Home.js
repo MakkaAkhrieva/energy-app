@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Context } from "../../index";
+import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
 import UserService from "../../services/UserService";
 import Header from "../../components/Header.js";
@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import React from "react";
 import styles from "./Home.module.css";
 import MapContainer from "../../components/MapContainer/MapContainer";
+import { AdminDashboard } from "../../components/AdminDashboard/AdminDashboard";
+import AdminLocationBoard  from "../../components/AdminLocationBoard/AdminLocationBord";
 
 const Home = () => {
   const { store } = useContext(Context);
@@ -36,7 +38,9 @@ const Home = () => {
     return (
       <div>
         <Header />
+        <Container maxWidth={false} sx={{ width: "90%" }}>
         <MapContainer />
+        </Container>
       </div>
     );
   }
@@ -44,8 +48,11 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Container>
+      <Container maxWidth={false} minWidth={false} sx={{ width: "90%",marginTop:"50px" }}>
+        <div style={{display:"flex"}}>
         <MapContainer />
+        <AdminLocationBoard/>
+        </div>
         <h1>
           {store.isAuth
             ? `Пользователь авторизован ${store.user.email}`

@@ -18,3 +18,25 @@ export const getStations = async (req, res, next) => {
     next(error);
   }
 };
+
+export const remove = async (req, res, next) => {
+  try {
+    const stationId = req.params.id;
+    console.log("stationId", stationId);
+    const removeStation = await stationService.removeStation(stationId);
+    res.json(removeStation);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const editStation = async (req, res, next) => {
+  try {
+    const stationId = req.params.id;
+    const { name } = req.body;
+    const editStation = await stationService.editStation(stationId, name);
+    res.json(editStation);
+  } catch (error) {
+    next(error);
+  }
+};

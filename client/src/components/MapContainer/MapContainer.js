@@ -82,7 +82,7 @@ const MapContainer = () => {
 
   return (
     <>
-      <Container>
+      <div >
         <div className={styles.addressSearchContainer}>
           <Autocomplete isLoaded={isLoaded} onSelect={onPlaceSelect} />
           {isAdmin ? (
@@ -111,7 +111,7 @@ const MapContainer = () => {
         ) : (
           <p>Loading map</p>
         )}
-      </Container>
+      </div>
     </>
   );
 };

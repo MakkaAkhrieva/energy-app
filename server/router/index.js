@@ -25,5 +25,17 @@ router.post(
   stationController.addStation
 );
 router.get("/users", authMiddleware, adminMiddleware, userController.getUsers);
+router.delete(
+  "/station/:id",
+  authMiddleware,
+  adminMiddleware,
+  stationController.remove
+);
+router.patch(
+  "/station/:id",
+  authMiddleware,
+  adminMiddleware,
+  stationController.editStation
+);
 
 export default router;

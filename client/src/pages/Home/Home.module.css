@@ -9,7 +9,7 @@
     background-color: #C9B8B8;
 }
 .addressSearchContainer{
-    width: 100%;
+    width: 50vw;
     display: flex;
 }
 .selected{

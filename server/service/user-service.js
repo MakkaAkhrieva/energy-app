@@ -6,7 +6,7 @@ import * as tokenService from "./token-service.js";
 import UserDto from "../dtos/user-dto.js";
 import ApiError from "../exceptions/api-error.js";
 
-export const registration = async (email, password) => {
+export const registration = async (email, password, name, surname, phone) => {
   const candidate = await userModel.findOne({ email: email });
   if (candidate) {
     throw ApiError.BadRequest(
@@ -19,6 +19,9 @@ export const registration = async (email, password) => {
     email: email,
     password: hashPassword,
     activationLink: activationLink,
+    name: name,
+    surname: surname,
+    phone: phone,
   });
 
   await mailService.sendActivationMail(

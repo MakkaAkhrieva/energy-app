@@ -1,12 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import AuthService from "../services/AuthService";
+import MapService from "../services/MapService";
 import axios from "axios";
 import { API_URL } from "../http";
+import { toJS } from "mobx";
+
 export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
   isError = "";
+  stations = [];
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -27,6 +32,54 @@ export default class Store {
     this.isError = error;
   }
 
+  async addStation(name, location) {
+    try {
+      const station = await MapService.addStation(name, location);
+      this.stations = [...this.stations, station.data];
+      console.log("newstore", toJS(this.stations));
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  async editStation(id, name) {
+    try {
+      await MapService.editStation(id, name);
+      this.getStations();
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  async removeStation(id) {
+    try {
+      await MapService.removeStation(id);
+      this.stations = this.stations.filter((item) => item._id !== id);
+      console.log(toJS(this.stations));
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  async getStations() {
+    try {
+      const response = await MapService.fetchMaps();
+      console.log("DATA", response.data);
+      this.stations = [...response.data];
+      this.setError(false);
+      console.log("store", toJS(this.stations));
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
   async login(email, password) {
     this.setLoading(true);
     try {
@@ -36,6 +89,7 @@ export default class Store {
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);
@@ -44,15 +98,22 @@ export default class Store {
     }
   }
 
-  async registration(email, password) {
+  async registration(email, password, name, surname, phone) {
     this.setLoading(true);
     try {
-      const response = await AuthService.registration(email, password);
+      const response = await AuthService.registration(
+        email,
+        password,
+        name,
+        surname,
+        phone
+      );
       console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);
@@ -69,6 +130,7 @@ export default class Store {
       localStorage.removeItem("role");
       this.setAuth(false);
       this.setUser({});
+      this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);
@@ -86,6 +148,7 @@ export default class Store {
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);

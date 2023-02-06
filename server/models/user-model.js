@@ -5,6 +5,9 @@ const UserSchema = new mongoose.Schema({
   isActivated: { type: Boolean, default: false },
   activationLink: { type: String },
   role: { type: String, default: "user" },
+  name: { type: String },
+  surname: { type: String },
+  phone: { type: String, unique: true },
 });
 
 export default mongoose.model("User", UserSchema);
