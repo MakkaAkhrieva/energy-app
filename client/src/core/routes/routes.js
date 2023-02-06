@@ -2,7 +2,7 @@ export const appRoutes = {
   HOME: "/",
   LOGIN: "/login",
   REGISTRATION: "/registration",
-  ADMIN_PROFILE: "admin/profile",
+  USER_PROFILE: "user/profile",
   USER: "/user",
   USER_PAGE: "/user/page",
   ADMIN: "/admin",

@@ -30,7 +30,7 @@ const Header = () => {
             </Link>
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Link to="admin/profile">
+              <Link to="user/profile">
                 <div
                   style={{
                     display: "flex",

@@ -6,7 +6,7 @@ import Login from "../../pages/Login/Login.js";
 import Registration from "../../pages/Registration/Registration.js";
 import { appRoutes } from "./routes.js";
 import { userRoles } from "./constant.js";
-import { Profile } from "../../components/Profile/Profile.js";
+import Profile from "../../components/Profile/Profile.js";
 
 export const routesConfig = [
   {
@@ -44,7 +44,9 @@ export const routesConfig = [
     element: <Page404 />,
   },
   {
-    path: appRoutes.ADMIN_PROFILE,
+    path: appRoutes.USER_PROFILE,
     element: <Profile />,
+    isProtected: true,
+    expectedRole: userRoles.user,
   },
 ];
