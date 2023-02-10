@@ -2,11 +2,13 @@ import { makeAutoObservable } from "mobx";
 import AuthService from "../services/AuthService";
 import MapService from "../services/MapService";
 import axios from "axios";
+import UserService from "../services/UserService.js";
 import { API_URL } from "../http";
 import { toJS } from "mobx";
+import { observable } from "mobx";
 
 export default class Store {
-  user = {};
+  user = {}
   isAuth = false;
   isLoading = false;
   isError = "";
@@ -48,6 +50,25 @@ export default class Store {
     try {
       await MapService.editStation(id, name);
       this.getStations();
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+      console.log(error.response?.data?.message);
+    }
+  }
+
+  async editUser(id, name, surname, email, phone) {
+    try {
+      const response = await UserService.editUser(
+        id,
+        name,
+        surname,
+        email,
+        phone
+      );
+      this.setUser({ ...response?.data?.user });
+      console.log("data", response?.data?.user);
+      console.log("SNTHIG");
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
@@ -125,12 +146,13 @@ export default class Store {
   async logout() {
     try {
       const response = await AuthService.logout();
-      console.log(response);
+      console.log(response, "response");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       this.setAuth(false);
       this.setUser({});
       this.setError(false);
+      console.log("logout");
     } catch (error) {
       this.setError(error.response?.data?.message);
       console.log(error.response?.data?.message);

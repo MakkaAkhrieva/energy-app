@@ -3,6 +3,7 @@ import { Context } from "../.././index.js";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import MapService from "../../services/MapService";
+import { MyTextInput } from "../storyBook/input/input.js";
 
 export const AddForm = ({ editId, onClose }) => {
   const [name, setName] = useState("");

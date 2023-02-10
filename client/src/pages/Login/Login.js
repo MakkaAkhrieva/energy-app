@@ -74,12 +74,16 @@ const Login = () => {
               name="email"
               type="email"
               placeholder="email"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <MyTextInput
               label="password"
               name="password"
               type="password"
               placeholder="password"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <Snackbar
               open={open}

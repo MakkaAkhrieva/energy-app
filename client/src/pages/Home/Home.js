@@ -8,18 +8,12 @@ import React from "react";
 import styles from "./Home.module.css";
 import MapContainer from "../../components/MapContainer/MapContainer";
 import { AdminDashboard } from "../../components/AdminDashboard/AdminDashboard";
-import AdminLocationBoard  from "../../components/AdminLocationBoard/AdminLocationBord";
+import AdminLocationBoard from "../../components/AdminLocationBoard/AdminLocationBord";
 
 const Home = () => {
   const { store } = useContext(Context);
   const [users, setUsers] = useState([]);
   const isAdmin = store.user.role === "admin";
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      store.checkAuth();
-    }
-  }, []);
 
   async function getUsers() {
     try {
@@ -38,8 +32,8 @@ const Home = () => {
     return (
       <div>
         <Header />
-        <Container maxWidth={false} sx={{ width: "90%" }}>
-        <MapContainer />
+        <Container maxWidth={false} sx={{ width: "90%", marginTop: "50px" }}>
+          <MapContainer />
         </Container>
       </div>
     );
@@ -48,21 +42,16 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Container maxWidth={false} minWidth={false} sx={{ width: "90%",marginTop:"50px" }}>
-        <div style={{display:"flex"}}>
-        <MapContainer />
-        <AdminLocationBoard/>
+      <Container
+        maxWidth={false}
+        minWidth={false}
+        sx={{ width: "90%", marginTop: "50px" }}
+      >
+        <div style={{ display: "flex" }}>
+          <MapContainer />
+          <AdminLocationBoard />
         </div>
-        <h1>
-          {store.isAuth
-            ? `Пользователь авторизован ${store.user.email}`
-            : "АВТОРИЗУЙСЯ"}
-        </h1>
-        <h1>
-          {store.user.isActivated
-            ? "Акаунт подтвержден по почте"
-            : "Подтвердите акаунт"}
-        </h1>
+
         {isAdmin ? (
           <>
             <button onClick={getUsers}>Получить пользователей</button>

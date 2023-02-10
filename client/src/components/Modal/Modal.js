@@ -1,12 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import styles from "./Modal.module.css";
-export const Modal = ({
-  isVisible = false,
-  title,
-  onClose,
-  component,
-}) => {
+export const Modal = ({ isVisible = false, title, onClose, component }) => {
   const keydownHandler = ({ key }) => {
     switch (key) {
       case "Escape":

@@ -83,3 +83,20 @@ export const getUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+export const editUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { name, surname, phone, email } = req.body;
+    const editUser = await userService.editUser(
+      userId,
+      name,
+      surname,
+      phone,
+      email
+    );
+    return res.json(editUser);
+  } catch (error) {
+    next(error);
+  }
+};

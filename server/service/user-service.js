@@ -98,3 +98,17 @@ export const getAllUsers = async () => {
   const users = await userModel.find();
   return users;
 };
+
+export const editUser = async (userId, name, surname, phone, email) => {
+  const user = await userModel.findOneAndUpdate(
+    { _id: userId },
+    { name: name, surname: surname, phone: phone, email: email },
+    { returnDocument: "after" }
+  );
+  const userDto = new UserDto(user);
+  console.log(user);
+  if (!user) {
+    throw ApiError.ErrorResponse(500, "Пользователь не найдена");
+  }
+  return { user: userDto };
+};

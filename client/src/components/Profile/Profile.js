@@ -1,24 +1,58 @@
 import { Container } from "@mui/system";
-import React, { useContext, useEffect } from "react";
-import Header from "../Header";
+import React, { useContext, useState } from "react";
 import car from "./car.png";
 import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
+import ProfileHeader from "../ProfileHeader/ProfileHeader.js";
+import Button from "@mui/material/Button";
+import PersonalData from "../PersonalData/PersonalData";
+import { Modal } from "../Modal/Modal";
+import RegistrationForm from "../RegistrationForm/RegistrationForm.js";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { Navigate, Link } from "react-router-dom";
 
 const Profile = () => {
   const { store } = useContext(Context);
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      store.checkAuth();
-    }
-  }, []);
-
+  const [isPersonalData, setIsPersonalData] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isModal, setModal] = useState(false);
   if (store.isLoading) {
     return <div>Загрузка.....</div>;
   }
+  /* debugger; */
+  const editProfile = (e, id) => {
+    e.preventDefault();
+    setIsEdit(true);
+    setModal(true);
+  };
+
+  const handleSubmit = (values) => {
+    console.log("values", values);
+    store
+      .editUser(
+        store.user.id,
+        values.name,
+        values.surname,
+        values.email,
+        values.phone
+      )
+      .then(() => {
+        if (store.isError) {
+          alert(store.isError);
+          setOpen(true);
+        } else {
+          alert("Edit");
+          setModal(false);
+        }
+      });
+    setOpen(false);
+    console.log("abc");
+  };
+
   return (
     <>
-      <Header />
+      <ProfileHeader />
       <Container
         maxWidth={false}
         minWidth={false}
@@ -31,10 +65,66 @@ const Profile = () => {
             flexDirection: "column",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              width: "50%",
+              justifyContent: "space-between",
+              marginBottom: "50px",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => setIsPersonalData(!isPersonalData)}
+            >
+              Personal Data
+            </Button>
+            <Button variant="outlined">Statistics</Button>
+            <Button variant="outlined">Favourite</Button>
+          </div>
+          <p>Profile</p>
           <p>{`Hi,${store.user.name + " " + store.user.surname}`}</p>
+          <p>
+            {store.user.isActivated
+              ? "Акаунт подтвержден по почте"
+              : "Подтвердите акаунт"}
+          </p>
           <img src={car} alt="car" style={{ height: "15rem" }} />
+          <p>Car:{store.user.car ? store.user.car : " No information"}</p>
+          {isPersonalData && <PersonalData editProfile={editProfile} />}
         </div>
+        <Link style={{ textDecoration: "none" }} to={"/"}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              marginTop: "30px",
+            }}
+          >
+            <KeyboardBackspaceIcon />
+            <p>Go Home</p>
+          </div>
+        </Link>
       </Container>
+
+      <Modal
+        isVisible={isModal}
+        title="Edit PersonalData"
+        component={
+          <RegistrationForm
+            open={open}
+            setOpen={setOpen}
+            handleSubmit={handleSubmit}
+            isEdit={isEdit}
+          />
+        }
+        footer={<button>Cancel</button>}
+        onClose={() => {
+          setModal(false);
+          setIsEdit(false);
+        }}
+      />
     </>
   );
 };

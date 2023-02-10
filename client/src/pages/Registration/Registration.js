@@ -1,19 +1,16 @@
 import React, { useContext, useState } from "react";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import { MyTextInput } from "../../components/storyBook/input/input";
+
 import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+
 import { Navigate } from "react-router-dom";
 import imglogin3 from "./imglogin3.jpg";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Button from "@mui/material/Button";
+
 import styles from "./Registration.module.css";
 import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
+import RegistrationForm from "../../components/RegistrationForm/RegistrationForm.js";
 
 const Registration = () => {
   const { store } = useContext(Context);
@@ -21,8 +18,6 @@ const Registration = () => {
   const navigate = useNavigate();
   const goBack = () => navigate(-1);
 
-  const phoneRegExp =
-    /(?:\+375|80)\s?\(?\d\d\)?\s?\d\d(?:\d[\-\s]\d\d[\-\s]\d\d|[\-\s]\d\d[\-\s]\d\d\d|\d{5})/;
   if (store.isAuth) {
     return <Navigate to={"/"} />;
   }
@@ -49,7 +44,12 @@ const Registration = () => {
           <EnergySavingsLeafIcon sx={{ color: "#0AB28B" }} />
           <p className={styles.logo}>ENERGY APP</p>
         </div>
-        <Formik
+        <RegistrationForm
+          handleSubmit={handleSubmit}
+          open={open}
+          setOpen={setOpen}
+        />
+        {/* <Formik
           initialValues={{
             email: "",
             password: "",
@@ -90,30 +90,40 @@ const Registration = () => {
               name="email"
               type="email"
               placeholder="email"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <MyTextInput
               label="password"
               name="password"
               type="password"
               placeholder="password"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <MyTextInput
               label="name"
               name="name"
               type="text"
               placeholder="name"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <MyTextInput
               label="surname"
               name="surname"
               type="text"
               placeholder="surname"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <MyTextInput
               label="phone"
               name="phone"
               type="phone"
               placeholder="phone"
+              variant="outlined"
+              style={{ marginTop: "20px" }}
             />
             <Snackbar
               open={open}
@@ -161,7 +171,7 @@ const Registration = () => {
               </Button>
             )}
           </Form>
-        </Formik>
+        </Formik> */}
         <div
           onClick={goBack}
           style={{

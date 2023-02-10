@@ -37,5 +37,6 @@ router.patch(
   adminMiddleware,
   stationController.editStation
 );
+router.patch("/user/:id", authMiddleware, userController.editUser);
 
 export default router;

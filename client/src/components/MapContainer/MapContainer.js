@@ -63,11 +63,11 @@ const MapContainer = () => {
     setMarkers([...markers, coordinates]);
   };
   console.log("Markers", markers);
-  useEffect(() => {
+/*   useEffect(() => {
     if (localStorage.getItem("token")) {
       store.checkAuth();
     }
-  }, []);
+  }, []); */
 
   useEffect(() => {
     getBrowserLocation()

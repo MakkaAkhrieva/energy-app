@@ -65,12 +65,11 @@ const AdminLocationBoard = () => {
             );
           })}
         </List>
-        {/* <AddForm /> */}
       </div>
       <Modal
         isVisible={isModal}
         title="Edit station"
-        component={<AddForm editId={editId} onClose={() => setModal(false)}  />}
+        component={<AddForm editId={editId} onClose={() => setModal(false)} />}
         footer={<button>Cancel</button>}
         onClose={() => setModal(false)}
       />
