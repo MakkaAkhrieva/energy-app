@@ -76,7 +76,6 @@ const RegistrationForm = ({
       }
       onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values);
-        console.log("qwert");
       }}
     >
       <Form

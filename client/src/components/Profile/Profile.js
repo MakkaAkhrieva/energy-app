@@ -28,7 +28,6 @@ const Profile = () => {
   };
 
   const handleSubmit = (values) => {
-    console.log("values", values);
     store
       .editUser(
         store.user.id,
@@ -47,7 +46,6 @@ const Profile = () => {
         }
       });
     setOpen(false);
-    console.log("abc");
   };
 
   return (

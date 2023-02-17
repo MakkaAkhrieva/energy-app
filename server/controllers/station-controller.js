@@ -2,8 +2,12 @@ import * as stationService from "../service/station-service.js";
 
 export const addStation = async (req, res, next) => {
   try {
-    const { name, location } = req.body;
-    const stationData = await stationService.addStation(name, location);
+    const { name, location, address } = req.body;
+    const stationData = await stationService.addStation(
+      name,
+      location,
+      address
+    );
     return res.json(stationData);
   } catch (error) {
     next(error);

@@ -8,8 +8,12 @@
 .modeToggle:hover{
     background-color: #C9B8B8;
 }
-.addressSearchContainer{
+.addressSearchContainer1{
     width: 50vw;
+    display: flex;
+}
+.addressSearchContainer2{
+    /* width: 100%; */
     display: flex;
 }
 .selected{

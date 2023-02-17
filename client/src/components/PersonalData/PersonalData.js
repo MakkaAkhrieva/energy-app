@@ -7,9 +7,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { MyTextInput } from "../storyBook/input/input";
-import Button from "@mui/material/Button";
-import { toJS } from "mobx";
+import Button from "@mui/material/Button";;
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "rgb(244, 244, 253)",
@@ -23,7 +21,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const PersonalData = ({ editProfile }) => {
   const { store } = useContext(Context);
-  console.log("presonalData", toJS(store.user));
   return (
     <>
       <Box sx={{ flexGrow: 1, width: "60%", marginTop: "50px" }}>

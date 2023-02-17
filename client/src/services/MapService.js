@@ -4,10 +4,11 @@ export default class MapService {
   static async fetchMaps() {
     return await $api.get("/stations");
   }
-  static async addStation(name, location) {
+  static async addStation(name, location, address) {
     return await $api.post("/station", {
       name: name,
       location: location,
+      address: address,
     });
   }
   static async removeStation(id) {

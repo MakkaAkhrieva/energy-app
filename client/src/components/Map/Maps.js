@@ -5,22 +5,23 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-import { GoogleMap, MarkerClusterer, MarkerF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import styles from "./Map.module.css";
 import { Context } from "../../index.js";
-import { defaultTheme } from "./Theme";
-import MapService from "../../services/MapService";
-import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
+import MapsInfoWindow from "../MapsInfoWindow/MapsInfoWindow";
+import { MapInfoMenu } from "../MapInfoMenu/MapInfoMenu";
+import Geocode from "react-geocode";
+import { CalculateMenu } from "../CalculateMenu/CalculateMenu";
 
 const containerStyle = {
   width: "100%",
   height: "100%",
-};
-
-const defaultOptions = {
-  styles: defaultTheme,
 };
 
 export const MODES = {
@@ -28,10 +29,19 @@ export const MODES = {
   SET_MARKER: 1,
 };
 
-const Maps = ({ center, mode, markers, onMarkerAdd }) => {
+const Maps = ({ center, mode, centerAddress }) => {
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+  Geocode.setLanguage("rus");
   const { store } = useContext(Context);
-  /* const [stations, setStations] = useState([]); */
+  const isAdmin = store.user.role === "admin";
+
+  const [selectedMarker, setSelectedMarker] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCalculateRoute, setIsCalculateRoute] = useState(false);
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+
   const mapRef = useRef(undefined);
+
   const onLoad = useCallback(function callback(map) {
     mapRef.current = map; //ссылка на саму карту
   }, []);
@@ -43,55 +53,54 @@ const Maps = ({ center, mode, markers, onMarkerAdd }) => {
     console.log("marker: ", marker);
   };
 
-  /* const addStation = (e) => {
-    e.preventDefault();
-    store.addStation((name = "name"), location).then(() => {
-      if (store.isError) {
-        alert(store.isError);
-      } else {
-        alert("Added");
-      }
-    });
-  }; */
-
   useEffect(() => {
     store.getStations();
-    console.log("store.stations", toJS(store.stations));
   }, []);
 
   const onClick = useCallback(
-    (loc) => {
+    async (loc) => {
       //loc объет гугла с координатами
       if (mode === MODES.SET_MARKER) {
         const lat = loc.latLng.lat();
         const lng = loc.latLng.lng();
-        console.log({ lat, lng });
         const name = "name";
-        store.addStation(name, { lat, lng }).then(() => {
-          if (store.isError) {
-            alert(store.isError);
-          } else {
-            alert("Added");
+        const convertFromCoodinatesToAddress = await Geocode.fromLatLng(
+          lat,
+          lng
+        ).then(
+          (response) => {
+            const address = response.results[0].formatted_address;
+            return address;
+          },
+          (error) => {
+            console.error(error);
           }
-        });
+        );
+        store
+          .addStation(name, { lat, lng }, convertFromCoodinatesToAddress)
+          .then(() => {
+            if (store.isError) {
+              alert(store.isError);
+            } else {
+              alert("Added");
+            }
+          });
       }
     },
-    [mode, onMarkerAdd]
+    [mode]
   );
 
-  console.log("storeSTations", toJS(store.stations));
   return (
-    <div className={styles.container}>
+    <div className={isAdmin ? styles.container1 : styles.container2}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={12}
         onLoad={onLoad}
         onUnmount={onUnmount}
-        options={defaultOptions}
         onClick={onClick}
       >
-        <MarkerF
+        <Marker
           onLoad={onLoadMarker}
           position={center}
           icon={{
@@ -99,23 +108,76 @@ const Maps = ({ center, mode, markers, onMarkerAdd }) => {
             fillColor: "#0AB28B",
             fillOpacity: 0.9,
             scale: 2,
-            strokeColor: "#C9B8B8",
+            strokeColor: "#0AB28B",
             strokeWeight: 2,
           }}
         />
-        {markers.map((pos) => {
-          console.log("pos2", pos);
-          return <MarkerF position={pos} />;
-        })}
         {store.stations.map((pos) => {
-          console.log("pos", toJS(pos));
           return (
             <React.Fragment key={pos._id}>
-              <MarkerF position={pos.location} />
+              {
+                <Marker
+                  icon={
+                    selectedMarker.address === pos.address
+                      ? {
+                          url: "/pin.svg",
+                          fillOpacity: 0.9,
+                          scale: 2,
+                          strokeColor: "#C9B8B8",
+                          strokeWeight: 2,
+                        }
+                      : null
+                  }
+                  position={pos.location}
+                  onClick={() => {
+                    setSelectedMarker(pos);
+                  }}
+                />
+              }
             </React.Fragment>
           );
         })}
+        {selectedMarker && !isMenuOpen && (
+          <InfoWindow
+            position={selectedMarker.location}
+            onCloseClick={() => {
+              setSelectedMarker("");
+            }}
+          >
+            <MapsInfoWindow
+              name={selectedMarker.name}
+              location={selectedMarker.location}
+              address={selectedMarker.address}
+              setIsMenuOpen={setIsMenuOpen}
+              center={center}
+            />
+          </InfoWindow>
+        )}
+
+        {directionsResponse && (
+          <DirectionsRenderer directions={directionsResponse} />
+        )}
       </GoogleMap>
+
+      {isMenuOpen && (
+        <MapInfoMenu
+          setIsMenuOpen={setIsMenuOpen}
+          selectedMarker={selectedMarker}
+          setSelectedMarker={setSelectedMarker}
+          center={center}
+          setIsCalculateRoute={setIsCalculateRoute}
+        />
+      )}
+
+      {isCalculateRoute && (
+        <CalculateMenu
+          centerAddress={centerAddress}
+          selectedMarker={selectedMarker}
+          center={center}
+          setIsCalculateRoute={setIsCalculateRoute}
+          setDirectionsResponse={setDirectionsResponse}
+        />
+      )}
     </div>
   );
 };

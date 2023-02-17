@@ -1,7 +1,7 @@
 import stationsModel from "../models/stations-model.js";
 import ApiError from "../exceptions/api-error.js";
 
-export const addStation = async (name, location) => {
+export const addStation = async (name, location, address) => {
   const candidateStationLocation = await stationsModel.findOne({
     location: location,
   });
@@ -15,6 +15,7 @@ export const addStation = async (name, location) => {
   const station = await stationsModel.create({
     name: name,
     location: location,
+    address: address,
   });
   return station;
 };

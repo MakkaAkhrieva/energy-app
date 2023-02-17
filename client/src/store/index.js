@@ -8,7 +8,7 @@ import { toJS } from "mobx";
 import { observable } from "mobx";
 
 export default class Store {
-  user = {}
+  user = {};
   isAuth = false;
   isLoading = false;
   isError = "";
@@ -34,15 +34,14 @@ export default class Store {
     this.isError = error;
   }
 
-  async addStation(name, location) {
+  async addStation(name, location, address) {
     try {
-      const station = await MapService.addStation(name, location);
+      const station = await MapService.addStation(name, location, address);
       this.stations = [...this.stations, station.data];
-      console.log("newstore", toJS(this.stations));
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+  
     }
   }
 
@@ -53,7 +52,6 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
     }
   }
 
@@ -67,12 +65,11 @@ export default class Store {
         phone
       );
       this.setUser({ ...response?.data?.user });
-      console.log("data", response?.data?.user);
-      console.log("SNTHIG");
+      
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+      
     }
   }
 
@@ -80,24 +77,24 @@ export default class Store {
     try {
       await MapService.removeStation(id);
       this.stations = this.stations.filter((item) => item._id !== id);
-      console.log(toJS(this.stations));
+    
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+     
     }
   }
 
   async getStations() {
     try {
       const response = await MapService.fetchMaps();
-      console.log("DATA", response.data);
+      
       this.stations = [...response.data];
       this.setError(false);
-      console.log("store", toJS(this.stations));
+     
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+      
     }
   }
 
@@ -105,7 +102,7 @@ export default class Store {
     this.setLoading(true);
     try {
       const response = await AuthService.login(email, password);
-      console.log(response);
+     
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -113,7 +110,7 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+      
     } finally {
       this.setLoading(false);
     }
@@ -129,7 +126,7 @@ export default class Store {
         surname,
         phone
       );
-      console.log(response);
+     
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -137,7 +134,7 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+     
     } finally {
       this.setLoading(false);
     }
@@ -146,16 +143,16 @@ export default class Store {
   async logout() {
     try {
       const response = await AuthService.logout();
-      console.log(response, "response");
+     
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       this.setAuth(false);
       this.setUser({});
       this.setError(false);
-      console.log("logout");
+      
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+      
     }
   }
 
@@ -165,7 +162,7 @@ export default class Store {
       const response = await axios.get(`${API_URL}/refresh`, {
         withCredentials: true,
       });
-      console.log(response);
+      
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -173,7 +170,7 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      console.log(error.response?.data?.message);
+      
     } finally {
       this.setLoading(false);
     }

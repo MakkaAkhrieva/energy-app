@@ -9,6 +9,7 @@ import styles from "./Home.module.css";
 import MapContainer from "../../components/MapContainer/MapContainer";
 import { AdminDashboard } from "../../components/AdminDashboard/AdminDashboard";
 import AdminLocationBoard from "../../components/AdminLocationBoard/AdminLocationBord";
+import { padding } from "@mui/system";
 
 const Home = () => {
   const { store } = useContext(Context);
@@ -42,25 +43,33 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Container
-        maxWidth={false}
-        minWidth={false}
-        sx={{ width: "90%", marginTop: "50px" }}
-      >
-        <div style={{ display: "flex" }}>
-          <MapContainer />
-          <AdminLocationBoard />
-        </div>
+      {isAdmin ? (
+        <Container
+          maxWidth={false}
+          minWidth={false}
+          sx={{ width: "90%", marginTop: "50px" }}
+        >
+          <div style={{ display: "flex" }}>
+            <MapContainer />
+            <AdminLocationBoard />
+          </div>
 
-        {isAdmin ? (
-          <>
-            <button onClick={getUsers}>Получить пользователей</button>
-            {users.map((user) => {
-              return <div key={user.email}>{user.email}</div>;
-            })}
-          </>
-        ) : null}
-      </Container>
+          {isAdmin ? (
+            <>
+              <button onClick={getUsers}>Получить пользователей</button>
+              {users.map((user) => {
+                return <div key={user.email}>{user.email}</div>;
+              })}
+            </>
+          ) : null}
+        </Container>
+      ) : (
+        <Container maxWidth={false} sx={{ width: "90%", marginTop: "50px" }}>
+          <div style={{ display: "flex", width: "100%",padding:"0" }}>
+            <MapContainer />
+          </div>
+        </Container>
+      )}
     </>
   );
 };

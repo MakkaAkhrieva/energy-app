@@ -1,20 +1,11 @@
-import React, {
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
-  useContext,
-} from "react";
+import React, { useState, useContext } from "react";
 import styles from "./AdminLocationBoard.module.css";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
 import { Context } from "../../index.js";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import AddLocationIcon from "@mui/icons-material/AddLocation";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import EditLocationIcon from "@mui/icons-material/EditLocation";
 import EditLocation from "@mui/icons-material/EditLocation";
 import { AddForm } from "../AddForm/AddForm";
 import { Modal } from "../Modal/Modal";
@@ -23,7 +14,6 @@ const AdminLocationBoard = () => {
   const { store } = useContext(Context);
   const [isModal, setModal] = useState(false);
   const [editId, setEditId] = useState(null);
-  console.log("admin", toJS(store.stations));
 
   const deleteStation = (e, id) => {
     e.preventDefault();
