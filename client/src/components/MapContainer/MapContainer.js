@@ -43,7 +43,7 @@ const MapContainer = () => {
         setMode(MODES.MOVE);
         setIsBtnMarkerSelected(false);
     }
-   
+
   }, [mode]);
 
   const { isLoaded } = useJsApiLoader({
@@ -59,13 +59,13 @@ const MapContainer = () => {
   useEffect(() => {
     getBrowserLocation()
       .then((currentLocation) => {
-        
+
         setCenter(currentLocation);
         Geocode.fromLatLng(currentLocation.lat, currentLocation.lng).then(
           (response) => {
-           
+            
             const address = response.results[0].formatted_address;
-           
+
             setCenterAddress(address);
             return address;
           },
@@ -77,7 +77,7 @@ const MapContainer = () => {
       .catch((defaultLocation) => {
         setCenter(defaultLocation);
       });
-  }, [setCenter, setCenterAddress]);
+  }, [setCenter]);
 
   return (
     <>
