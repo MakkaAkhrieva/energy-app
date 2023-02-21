@@ -12,7 +12,6 @@ import Geocode from "react-geocode";
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
-
 const defaultCenter = {
   lat: 60.9,
   lng: 27.5667,
@@ -26,6 +25,9 @@ const MapContainer = () => {
   const { store } = useContext(Context);
   const [mode, setMode] = useState(MODES.MOVE);
   const [isBtnMarkerSelected, setIsBtnMarkerSelected] = useState(false);
+
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
+  Geocode.setLanguage("rus");
 
   const isAdmin = store.user.role === "admin";
 
@@ -43,7 +45,6 @@ const MapContainer = () => {
         setMode(MODES.MOVE);
         setIsBtnMarkerSelected(false);
     }
-   
   }, [mode]);
 
   const { isLoaded } = useJsApiLoader({
@@ -59,25 +60,31 @@ const MapContainer = () => {
   useEffect(() => {
     getBrowserLocation()
       .then((currentLocation) => {
-        
         setCenter(currentLocation);
-        Geocode.fromLatLng(currentLocation.lat, currentLocation.lng).then(
-          (response) => {
-           
-            const address = response.results[0].formatted_address;
-           
-            setCenterAddress(address);
-            return address;
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
+        Geocode.fromLatLng(currentLocation.lat, currentLocation.lng)
+          .then(
+            (response) => {
+              console.log("resp2", response);
+              const address = response.results[0].formatted_address;
+              return address;
+            },
+            (error) => {
+              console.error("fghdfgh", error);
+            }
+          )
+          .then((response) => {
+            console.log("resp", response);
+            setCenterAddress(response);
+          });
       })
       .catch((defaultLocation) => {
+        console.log("catch");
         setCenter(defaultLocation);
       });
-  }, [setCenter, setCenterAddress]);
+  }, []);
+
+  console.log("address", centerAddress);
+  console.log("location", center);
 
   return (
     <>
@@ -104,7 +111,12 @@ const MapContainer = () => {
           ) : null}
         </div>
         {isLoaded ? (
-          <Maps center={center} mode={mode} centerAddress={centerAddress} />
+          <Maps
+            center={center}
+            mode={mode}
+            centerAddress={centerAddress}
+            setCenterAddress={setCenterAddress}
+          />
         ) : (
           <p>Loading map</p>
         )}

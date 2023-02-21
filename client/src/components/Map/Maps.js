@@ -29,7 +29,7 @@ export const MODES = {
   SET_MARKER: 1,
 };
 
-const Maps = ({ center, mode, centerAddress }) => {
+const Maps = ({ center, mode, centerAddress, setCenterAddress }) => {
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
   Geocode.setLanguage("rus");
   const { store } = useContext(Context);
@@ -176,6 +176,7 @@ const Maps = ({ center, mode, centerAddress }) => {
           center={center}
           setIsCalculateRoute={setIsCalculateRoute}
           setDirectionsResponse={setDirectionsResponse}
+          setCenterAddress={setCenterAddress}
         />
       )}
     </div>
