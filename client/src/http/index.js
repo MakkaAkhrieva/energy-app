@@ -31,7 +31,7 @@ $api.interceptors.response.use(
         localStorage.setItem("token", response.data.accessToken);
         localStorage.setItem("role", response.data.user.role);
         return $api.request(originalRequest);
-      } catch (e) {
+      } catch (error) {
         console.log("НЕ АВТОРИЗОВАН");
         localStorage.clear();
         window.location = "/login";

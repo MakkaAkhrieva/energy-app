@@ -22,8 +22,8 @@ const Profile = () => {
     return <div>Загрузка.....</div>;
   }
   /* debugger; */
-  const editProfile = (e, id) => {
-    e.preventDefault();
+  const editProfile = (event, id) => {
+    event.preventDefault();
     setIsEdit(true);
     setModal(true);
   };

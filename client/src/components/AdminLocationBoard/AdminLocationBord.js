@@ -15,8 +15,8 @@ const AdminLocationBoard = () => {
   const [isModal, setModal] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  const deleteStation = (e, id) => {
-    e.preventDefault();
+  const deleteStation = (event, id) => {
+    event.preventDefault();
     store.removeStation(id).then(() => {
       if (store.isError) {
         alert(store.isError);
@@ -26,8 +26,8 @@ const AdminLocationBoard = () => {
     });
   };
 
-  const editStation = (e, id) => {
-    e.preventDefault();
+  const editStation = (event, id) => {
+    event.preventDefault();
     setModal(true);
     setEditId(id);
   };
@@ -45,10 +45,10 @@ const AdminLocationBoard = () => {
                   secondary={`lat:${station.location.lat} lng:${station.location.lng}`}
                 />
                 <DeleteOutlineIcon
-                  onClick={(e) => deleteStation(e, station._id)}
+                  onClick={(event) => deleteStation(event, station._id)}
                 />
                 <EditLocation
-                  onClick={(e) => editStation(e, station._id)}
+                  onClick={(event) => editStation(event, station._id)}
                   sx={{ color: "#0AB28B" }}
                 />
               </ListItem>

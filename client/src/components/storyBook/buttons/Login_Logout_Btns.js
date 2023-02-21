@@ -12,7 +12,7 @@ export const LogInOutButton = ({ name, link, onClick = function () {} }) => {
           backgroundColor: "#0AB28B",
           color: "white",
         }}
-        onClick={() => onClick()}
+        onClick={onClick}
       >
         {name}
       </Button>

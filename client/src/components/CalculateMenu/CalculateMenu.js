@@ -14,8 +14,9 @@ export const CalculateMenu = ({
   setDirectionsResponse,
   setIsCalculateRoute,
 }) => {
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
+  const google = window.google;
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
   const [origin, setOrigin] = useState(`${centerAddress}`);
   const [destination, setDestintion] = useState(`${selectedMarker.address}`);
@@ -34,26 +35,32 @@ export const CalculateMenu = ({
     setDestintion("");
 
     setDirectionsResponse(null);
-    setDistance("");
-    setDuration("");
+    setDistance(null);
+    setDuration(null);
   }
 
   async function calculateRoute() {
-    if (origin === "" || destination === "") {
+    if (!origin || !destination) {
       return;
     }
-    // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
     const results = await directionsService.route({
-      origin: origin,
-      destination: destination,
-      // eslint-disable-next-line no-undef
+      origin,
+      destination,
       travelMode: google.maps.TravelMode.DRIVING,
     });
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   }
+  const onOriginHandler = (event) => {
+    setOrigin(event.target.value);
+  };
+
+  const onDestinationhandler = (event) => {
+    setDestintion(event.target.value);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }} zIndex="1" className={styles.container}>
@@ -70,7 +77,7 @@ export const CalculateMenu = ({
                 placeholder="Origin"
                 variant="standard"
                 value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
+                onChange={onOriginHandler}
               />
             </Autocomplete>
           </Grid>
@@ -81,7 +88,7 @@ export const CalculateMenu = ({
                 type="text"
                 placeholder="Destination"
                 variant="standard"
-                onChange={(e) => setDestintion(e.target.value)}
+                onChange={onDestinationhandler}
                 value={destination}
               />
             </Autocomplete>
@@ -98,14 +105,20 @@ export const CalculateMenu = ({
                 Calculate
               </Button>
               <Button onClick={clearRoute}>CLear</Button>
-              <div
-                className={styles.button_wrapper}
-                onClick={() => makeRoute()}
-              >
+              <div className={styles.button_wrapper} onClick={makeRoute}>
                 <Button>Route</Button>
                 <DirectionsCarIcon sx={{ color: "red" }} />
               </div>
-              <Button onClick={() => setIsCalculateRoute(false)}>Close</Button>
+              <Button
+                onClick={() => {
+                  setIsCalculateRoute(false);
+                  setDirectionsResponse(null);
+                  setDistance(null);
+                  setDuration(null);
+                }}
+              >
+                Close
+              </Button>
             </div>
           </Grid>
         </Grid>
