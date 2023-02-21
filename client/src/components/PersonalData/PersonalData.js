@@ -7,7 +7,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";;
+import Button from "@mui/material/Button";
+import styles from "./PersonalData.module.css";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "rgb(244, 244, 253)",
@@ -33,7 +34,7 @@ const PersonalData = ({ editProfile }) => {
                 padding: "5px",
               }}
             >
-              <p style={{ marginRight: "5px" }}>Name:</p>
+              <p className={styles.p}>Name:</p>
               <TextField
                 defaultValue={`${store.user.name}`}
                 variant="standard"
@@ -53,7 +54,7 @@ const PersonalData = ({ editProfile }) => {
                 padding: "5px",
               }}
             >
-              <p style={{ marginRight: "5px" }}>Surname:</p>
+              <p className={styles.p}>Surname:</p>
               <TextField
                 defaultValue={`${store.user.surname}`}
                 variant="standard"
@@ -73,7 +74,7 @@ const PersonalData = ({ editProfile }) => {
                 padding: "5px",
               }}
             >
-              <p style={{ marginRight: "5px" }}>Role:</p>
+              <p className={styles.p}>Role:</p>
               <TextField
                 defaultValue={`${store.user.role}`}
                 variant="standard"
@@ -93,7 +94,7 @@ const PersonalData = ({ editProfile }) => {
                 padding: "5px",
               }}
             >
-              <p style={{ marginRight: "5px" }}>Email:</p>
+              <p className={styles.p}>Email:</p>
               <TextField
                 defaultValue={`${store.user.email}`}
                 variant="standard"
@@ -113,7 +114,7 @@ const PersonalData = ({ editProfile }) => {
                 padding: "5px",
               }}
             >
-              <p style={{ marginRight: "5px" }}>Phone:</p>
+              <p className={styles.p}>Phone:</p>
               <TextField
                 defaultValue={`${store.user.phone}`}
                 variant="standard"

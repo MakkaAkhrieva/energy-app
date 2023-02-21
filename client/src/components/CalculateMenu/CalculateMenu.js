@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import styles from "./CalculateMenu.module.css";
 
 export const CalculateMenu = ({
   centerAddress,
@@ -55,21 +56,7 @@ export const CalculateMenu = ({
   }
   return (
     <>
-      <Box
-        sx={{ flexGrow: 1 }}
-        zIndex="1"
-        style={{
-          position: "absolute",
-          width: "500px",
-          top: 0,
-          right: 0,
-          backgroundColor: "white",
-          border: "solid 1px rgb(0 0 0 / 10%)",
-          boxShadow: "rgb(0 0 0 / 50%) 0px 12px 30px",
-          padding: "7px",
-          boxSizing: "border-box",
-        }}
-      >
+      <Box sx={{ flexGrow: 1 }} zIndex="1" className={styles.container}>
         <Grid
           container
           spacing={{ xs: 1, md: 1 }}
@@ -106,13 +93,13 @@ export const CalculateMenu = ({
             <p>Duration: {duration}</p>
           </Grid>
           <Grid item xs={2} sm={4} md={8}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className={styles.buttons_wrapper}>
               <Button type="submit" onClick={calculateRoute}>
                 Calculate
               </Button>
               <Button onClick={clearRoute}>CLear</Button>
               <div
-                style={{ display: "flex", alignItems: "center" }}
+                className={styles.button_wrapper}
                 onClick={() => makeRoute()}
               >
                 <Button>Route</Button>

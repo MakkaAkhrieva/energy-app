@@ -10,6 +10,7 @@ import { Modal } from "../Modal/Modal";
 import RegistrationForm from "../RegistrationForm/RegistrationForm.js";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { Navigate, Link } from "react-router-dom";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
   const { store } = useContext(Context);
@@ -56,21 +57,8 @@ const Profile = () => {
         minWidth={false}
         sx={{ width: "90%", marginTop: "50px" }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "space-between",
-              marginBottom: "50px",
-            }}
-          >
+        <div className={styles.container}>
+          <div className={styles.wrapper}>
             <Button
               variant="outlined"
               onClick={() => setIsPersonalData(!isPersonalData)}
@@ -87,19 +75,12 @@ const Profile = () => {
               ? "Акаунт подтвержден по почте"
               : "Подтвердите акаунт"}
           </p>
-          <img src={car} alt="car" style={{ height: "15rem" }} />
+          <img src={car} alt="car" className={styles.image} />
           <p>Car:{store.user.car ? store.user.car : " No information"}</p>
           {isPersonalData && <PersonalData editProfile={editProfile} />}
         </div>
-        <Link style={{ textDecoration: "none" }} to={"/"}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-              marginTop: "30px",
-            }}
-          >
+        <Link className={styles.link} to={"/"}>
+          <div className={styles.gohome}>
             <KeyboardBackspaceIcon />
             <p>Go Home</p>
           </div>

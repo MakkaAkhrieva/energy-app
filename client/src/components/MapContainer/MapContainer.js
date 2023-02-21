@@ -83,9 +83,6 @@ const MapContainer = () => {
       });
   }, []);
 
-  console.log("address", centerAddress);
-  console.log("location", center);
-
   return (
     <>
       <div>

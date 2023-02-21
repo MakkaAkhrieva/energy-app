@@ -1,29 +1,37 @@
-.modeToggle{
-    background-color: #fff;
-    border:2px solid black;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 250px;
+.modeToggle {
+  background-color: #fff;
+  border: 2px solid black;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 250px;
 }
-.modeToggle:hover{
-    background-color: #C9B8B8;
+.modeToggle:hover {
+  background-color: #c9b8b8;
 }
-.addressSearchContainer1{
-    width: 50vw;
-    display: flex;
+.addressSearchContainer1 {
+  width: 50vw;
+  display: flex;
 }
-.addressSearchContainer2{
-    /* width: 100%; */
-    display: flex;
+.addressSearchContainer2 {
+  /* width: 100%; */
+  display: flex;
 }
-.selected{
-    background-color: #C9B8B8;
-    border:2px solid black;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 250px;
+.selected {
+  background-color: #c9b8b8;
+  border: 2px solid black;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 250px;
 }
-.selected:hover{
-    background-color: #0AB28B;
-    color: black;
+.selected:hover {
+  background-color: #0ab28b;
+  color: black;
+}
+.container1 {
+  display: flex;
+}
+.container2 {
+  display: flex;
+  width: 100%;
+  padding: 0;
 }
