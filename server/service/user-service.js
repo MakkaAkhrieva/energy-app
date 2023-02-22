@@ -112,3 +112,17 @@ export const editUser = async (userId, name, surname, phone, email) => {
   }
   return { user: userDto };
 };
+
+export const editUserFavourites = async (userId, favourites) => {
+  const user = await userModel.findOneAndUpdate(
+    { _id: userId },
+    { favourites: favourites },
+    { returnDocument: "after" }
+  );
+  const userDto = new UserDto(user);
+  console.log(user);
+  if (!user) {
+    throw ApiError.ErrorResponse(500, "Пользователь не найдена");
+  }
+  return { user: userDto };
+};

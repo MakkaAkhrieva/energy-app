@@ -15,7 +15,7 @@ import styles from "./Map.module.css";
 import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
 import MapsInfoWindow from "../MapsInfoWindow/MapsInfoWindow";
-import { MapInfoMenu } from "../MapInfoMenu/MapInfoMenu";
+import MapInfoMenu from "../MapInfoMenu/MapInfoMenu";
 import Geocode from "react-geocode";
 import { CalculateMenu } from "../CalculateMenu/CalculateMenu";
 

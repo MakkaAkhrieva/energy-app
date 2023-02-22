@@ -23,17 +23,11 @@ const Item = styled(Paper)(({ theme }) => ({
 const PersonalData = ({ editProfile }) => {
   const { store } = useContext(Context);
   return (
-    <>
-      <Box sx={{ flexGrow: 1, width: "60%", marginTop: "50px" }}>
+    <div className={styles.container}>
+      <Box sx={{ flexGrow: 1, width: "90%", marginTop: "50px" }}>
         <Grid container spacing={2}>
           <Grid item xs={6} md={4}>
-            <Item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-            >
+            <Item className={styles.item}>
               <p className={styles.p}>Name:</p>
               <TextField
                 defaultValue={`${store.user.name}`}
@@ -47,13 +41,7 @@ const PersonalData = ({ editProfile }) => {
             </Item>
           </Grid>
           <Grid item xs={6} md={4}>
-            <Item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-            >
+            <Item className={styles.item}>
               <p className={styles.p}>Surname:</p>
               <TextField
                 defaultValue={`${store.user.surname}`}
@@ -67,13 +55,7 @@ const PersonalData = ({ editProfile }) => {
             </Item>
           </Grid>
           <Grid item xs={6} md={4}>
-            <Item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-            >
+            <Item className={styles.item}>
               <p className={styles.p}>Role:</p>
               <TextField
                 defaultValue={`${store.user.role}`}
@@ -87,13 +69,7 @@ const PersonalData = ({ editProfile }) => {
             </Item>
           </Grid>
           <Grid item xs={6} md={4}>
-            <Item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-            >
+            <Item className={styles.item}>
               <p className={styles.p}>Email:</p>
               <TextField
                 defaultValue={`${store.user.email}`}
@@ -107,13 +83,7 @@ const PersonalData = ({ editProfile }) => {
             </Item>
           </Grid>
           <Grid item xs={6} md={4}>
-            <Item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "5px",
-              }}
-            >
+            <Item className={styles.item}>
               <p className={styles.p}>Phone:</p>
               <TextField
                 defaultValue={`${store.user.phone}`}
@@ -135,7 +105,7 @@ const PersonalData = ({ editProfile }) => {
       >
         Edit
       </Button>
-    </>
+    </div>
   );
 };
 

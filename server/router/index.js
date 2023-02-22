@@ -38,5 +38,10 @@ router.patch(
   stationController.editStation
 );
 router.patch("/user/:id", authMiddleware, userController.editUser);
+router.patch(
+  "/user/favourites/:id",
+  authMiddleware,
+  userController.editUserFavourites
+);
 
 export default router;
