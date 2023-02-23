@@ -24,9 +24,9 @@ export const Autocomplete = ({ isLoaded, onSelect }) => {
     clearSuggestions();
   });
 
-  const handleInput = (e) => {
+  const handleInput = (event) => {
     // Update the keyword of the input element
-    setValue(e.target.value);
+    setValue(event.target.value);
   };
 
   const handleSelect =

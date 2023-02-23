@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
 import UserService from "../../services/UserService";
@@ -7,9 +7,7 @@ import Container from "@mui/material/Container";
 import React from "react";
 import styles from "./Home.module.css";
 import MapContainer from "../../components/MapContainer/MapContainer";
-import { AdminDashboard } from "../../components/AdminDashboard/AdminDashboard";
 import AdminLocationBoard from "../../components/AdminLocationBoard/AdminLocationBord";
-import { padding } from "@mui/system";
 
 const Home = () => {
   const { store } = useContext(Context);
@@ -49,7 +47,7 @@ const Home = () => {
           minWidth={false}
           sx={{ width: "90%", marginTop: "50px" }}
         >
-          <div style={{ display: "flex" }}>
+          <div className={styles.container1}>
             <MapContainer />
             <AdminLocationBoard />
           </div>
@@ -65,7 +63,7 @@ const Home = () => {
         </Container>
       ) : (
         <Container maxWidth={false} sx={{ width: "90%", marginTop: "50px" }}>
-          <div style={{ display: "flex", width: "100%",padding:"0" }}>
+          <div className={styles.container2}>
             <MapContainer />
           </div>
         </Container>

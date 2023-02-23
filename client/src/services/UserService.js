@@ -12,4 +12,9 @@ export default class UserService {
       phone: phone,
     });
   }
+  static async editUserFavourites(id, favourites) {
+    return await $api.patch(`/user/favourites/${id}`, {
+      favourites: favourites,
+    });
+  }
 }

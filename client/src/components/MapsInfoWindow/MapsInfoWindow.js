@@ -15,6 +15,11 @@ export default function MapsInfoWindow({
   const makeRoute = () => {
     window.location.href = `https://www.google.com/maps/dir/${center.lat},${center.lng}/${location.lat},${location.lng}`;
   };
+
+  const moreHandler = () => {
+    setIsMenuOpen(true);
+  };
+
   return (
     <Card
       sx={{
@@ -38,8 +43,8 @@ export default function MapsInfoWindow({
           {address}
         </Typography>
         <div style={{ dispay: "flex" }}>
-          <Button onClick={() => setIsMenuOpen(true)}>More</Button>
-          <Button onClick={() => makeRoute()}>Route</Button>
+          <Button onClick={moreHandler}>More</Button>
+          <Button onClick={makeRoute}>Route</Button>
         </div>
       </CardContent>
     </Card>

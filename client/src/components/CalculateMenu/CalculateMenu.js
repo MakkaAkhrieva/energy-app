@@ -1,9 +1,11 @@
-import React, { useRef, useState } from "react";
-import { Box, ButtonGroup, HStack, Input, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { Button } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import styles from "./CalculateMenu.module.css";
 
 export const CalculateMenu = ({
   centerAddress,
@@ -12,92 +14,112 @@ export const CalculateMenu = ({
   setDirectionsResponse,
   setIsCalculateRoute,
 }) => {
-  const destiantionRef = useRef();
-  const originRef = useRef();
+  const google = window.google;
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
+  const [origin, setOrigin] = useState(`${centerAddress}`);
+  const [destination, setDestintion] = useState(`${selectedMarker.address}`);
 
   const makeRoute = () => {
     window.location.href = `https://www.google.com/maps/dir/${center.lat},${center.lng}/${selectedMarker.location.lat},${selectedMarker.location.lng}`;
   };
 
+  useEffect(() => {
+    setDestintion(`${selectedMarker.address}`);
+  }, [centerAddress, selectedMarker.address]);
+
   function clearRoute() {
-    originRef.current.value = "";
-    destiantionRef.current.value = "";
+    setOrigin("");
+    setDestintion("");
+
     setDirectionsResponse(null);
-    setDistance("");
-    setDuration("");
+    setDistance(null);
+    setDuration(null);
   }
 
   async function calculateRoute() {
-    if (originRef.current.value === "" || destiantionRef.current.value === "") {
+    if (!origin || !destination) {
       return;
     }
-    // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
     const results = await directionsService.route({
-      origin: originRef.current.value,
-      destination: destiantionRef.current.value,
-      // eslint-disable-next-line no-undef
+      origin,
+      destination,
       travelMode: google.maps.TravelMode.DRIVING,
     });
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   }
+  const onOriginHandler = (event) => {
+    setOrigin(event.target.value);
+  };
+
+  const onClose = () => {
+    setIsCalculateRoute(false);
+    setDirectionsResponse(null);
+    setDistance(null);
+    setDuration(null);
+  };
+
+  const onDestinationhandler = (event) => {
+    setDestintion(event.target.value);
+  };
+
   return (
     <>
-      <Box
-        p={4}
-        borderRadius="lg"
-        m={4}
-        bgColor="white"
-        shadow="base"
-        zIndex="1"
-        style={{ position: "absolute", width: "600px", top: 0, right: 0 }}
-      >
-        <HStack spacing={2} justifyContent="space-between">
-          <Box flexGrow={1}>
+      <Box sx={{ flexGrow: 1 }} zIndex="1" className={styles.container}>
+        <Grid
+          container
+          spacing={{ xs: 1, md: 1 }}
+          columns={{ xs: 2, sm: 2, md: 8 }}
+        >
+          <Grid item xs={2} sm={4} md={4}>
             <Autocomplete>
-              <Input
+              <TextField
+                sx={{ width: "90%" }}
                 type="text"
                 placeholder="Origin"
-                ref={originRef}
-                value={centerAddress}
+                variant="standard"
+                value={origin}
+                onChange={onOriginHandler}
               />
             </Autocomplete>
-          </Box>
-          <Box flexGrow={1}>
+          </Grid>
+          <Grid item xs={2} sm={4} md={4}>
             <Autocomplete>
-              <Input
+              <TextField
+                sx={{ width: "90%" }}
                 type="text"
                 placeholder="Destination"
-                ref={destiantionRef}
-                value={selectedMarker.address}
+                variant="standard"
+                onChange={onDestinationhandler}
+                value={destination}
+                disabled={true}
               />
             </Autocomplete>
-          </Box>
-
-          <ButtonGroup>
-            <Button type="submit" onClick={calculateRoute}>
-              Calculate
-            </Button>
-            <Button onClick={clearRoute}>CLear</Button>
-            <ClearIcon onClick={() => setIsCalculateRoute(false)} />
-          </ButtonGroup>
-        </HStack>
-        <HStack spacing={4} mt={4} justifyContent="space-between">
-          <Text>Distance: {distance} </Text>
-          <Text>Duration: {duration} </Text>{" "}
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <p>Route</p>
-            <DirectionsCarIcon
-              sx={{ color: "red" }}
-              onClick={() => makeRoute()}
-            />
-          </div>
-        </HStack>
+          </Grid>
+          <Grid item xs={2} sm={4} md={4}>
+            <p>Distance: {distance}</p>
+          </Grid>
+          <Grid item xs={2} sm={4} md={4}>
+            <p>Duration: {duration}</p>
+          </Grid>
+          <Grid item xs={2} sm={4} md={8}>
+            <div className={styles.buttons_wrapper}>
+              <Button type="submit" onClick={calculateRoute}>
+                Calculate
+              </Button>
+              <Button onClick={clearRoute}>CLear</Button>
+              <div className={styles.button_wrapper} onClick={makeRoute}>
+                <Button>Route</Button>
+                <DirectionsCarIcon sx={{ color: "red" }} />
+              </div>
+              <Button onClick={onClose}>Close</Button>
+            </div>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );

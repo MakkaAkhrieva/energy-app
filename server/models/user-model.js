@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   name: { type: String },
   surname: { type: String },
   phone: { type: String, unique: true },
+  favourites: { type: Array, default: [] },
 });
 
 export default mongoose.model("User", UserSchema);

@@ -4,15 +4,14 @@ import MapService from "../services/MapService";
 import axios from "axios";
 import UserService from "../services/UserService.js";
 import { API_URL } from "../http";
-import { toJS } from "mobx";
-import { observable } from "mobx";
 
 export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
-  isError = "";
+  isError = false;
   stations = [];
+  favouriteStations = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -34,6 +33,16 @@ export default class Store {
     this.isError = error;
   }
 
+  addFavouriteStation(favouriteStation) {
+    this.favouriteStations = [...this.user.favourites, favouriteStation];
+  }
+
+  deleteFavouriteStation(favouriteId) {
+    this.favouriteStations = this.user.favourites.filter(
+      (station) => station._id !== favouriteId
+    );
+  }
+
   async addStation(name, location, address) {
     try {
       const station = await MapService.addStation(name, location, address);
@@ -41,7 +50,6 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-  
     }
   }
 
@@ -65,11 +73,20 @@ export default class Store {
         phone
       );
       this.setUser({ ...response?.data?.user });
-      
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      
+    }
+  }
+
+  async editUserFavourites(id, favourites) {
+    try {
+      const response = await UserService.editUserFavourites(id, favourites);
+      this.setUser(response?.data?.user);
+      this.favouriteStations = [...response?.data?.user.favourites];
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
     }
   }
 
@@ -77,24 +94,19 @@ export default class Store {
     try {
       await MapService.removeStation(id);
       this.stations = this.stations.filter((item) => item._id !== id);
-    
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-     
     }
   }
 
   async getStations() {
     try {
       const response = await MapService.fetchMaps();
-      
       this.stations = [...response.data];
       this.setError(false);
-     
     } catch (error) {
       this.setError(error.response?.data?.message);
-      
     }
   }
 
@@ -102,7 +114,6 @@ export default class Store {
     this.setLoading(true);
     try {
       const response = await AuthService.login(email, password);
-     
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -110,7 +121,6 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      
     } finally {
       this.setLoading(false);
     }
@@ -126,7 +136,7 @@ export default class Store {
         surname,
         phone
       );
-     
+
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -134,7 +144,6 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-     
     } finally {
       this.setLoading(false);
     }
@@ -142,17 +151,14 @@ export default class Store {
 
   async logout() {
     try {
-      const response = await AuthService.logout();
-     
+      await AuthService.logout();
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       this.setAuth(false);
       this.setUser({});
       this.setError(false);
-      
     } catch (error) {
       this.setError(error.response?.data?.message);
-      
     }
   }
 
@@ -162,7 +168,7 @@ export default class Store {
       const response = await axios.get(`${API_URL}/refresh`, {
         withCredentials: true,
       });
-      
+
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -170,7 +176,6 @@ export default class Store {
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
-      
     } finally {
       this.setLoading(false);
     }

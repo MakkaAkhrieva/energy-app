@@ -15,7 +15,7 @@ import styles from "./Map.module.css";
 import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
 import MapsInfoWindow from "../MapsInfoWindow/MapsInfoWindow";
-import { MapInfoMenu } from "../MapInfoMenu/MapInfoMenu";
+import MapInfoMenu from "../MapInfoMenu/MapInfoMenu";
 import Geocode from "react-geocode";
 import { CalculateMenu } from "../CalculateMenu/CalculateMenu";
 
@@ -29,7 +29,7 @@ export const MODES = {
   SET_MARKER: 1,
 };
 
-const Maps = ({ center, mode, centerAddress }) => {
+const Maps = ({ center, mode, centerAddress, setCenterAddress }) => {
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
   Geocode.setLanguage("rus");
   const { store } = useContext(Context);
@@ -176,6 +176,7 @@ const Maps = ({ center, mode, centerAddress }) => {
           center={center}
           setIsCalculateRoute={setIsCalculateRoute}
           setDirectionsResponse={setDirectionsResponse}
+          setCenterAddress={setCenterAddress}
         />
       )}
     </div>

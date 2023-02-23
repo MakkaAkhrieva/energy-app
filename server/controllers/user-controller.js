@@ -100,3 +100,14 @@ export const editUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const editUserFavourites = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { favourites } = req.body;
+    const editUser = await userService.editUserFavourites(userId,favourites);
+    return res.json(editUser);
+  } catch (error) {
+    next(error);
+  }
+};

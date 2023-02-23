@@ -1,0 +1,22 @@
+.container {
+  position: absolute;
+  width: 500px;
+  top: 0;
+  right: 0;
+  background-color: white;
+  border: solid 1px rgb(0 0 0 / 10%);
+  box-shadow: rgb(0 0 0 / 50%) 0px 12px 30px;
+  padding: 7px;
+  box-sizing: border-box;
+}
+.button_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

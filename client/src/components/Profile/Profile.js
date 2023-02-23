@@ -1,15 +1,17 @@
-import { Container } from "@mui/system";
-import React, { useContext, useState } from "react";
-import car from "./car.png";
-import { Context } from "../../index.js";
-import { observer } from "mobx-react-lite";
-import ProfileHeader from "../ProfileHeader/ProfileHeader.js";
-import Button from "@mui/material/Button";
-import PersonalData from "../PersonalData/PersonalData";
-import { Modal } from "../Modal/Modal";
-import RegistrationForm from "../RegistrationForm/RegistrationForm.js";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Navigate, Link } from "react-router-dom";
+import { Container } from '@mui/system';
+import React, { useCallback, useContext, useState } from 'react';
+import car from './car.png';
+import { Context } from '../../index.js';
+import { observer } from 'mobx-react-lite';
+import ProfileHeader from '../ProfileHeader/ProfileHeader.js';
+import Button from '@mui/material/Button';
+import PersonalData from '../PersonalData/PersonalData';
+import { Modal } from '../Modal/Modal';
+import RegistrationForm from '../RegistrationForm/RegistrationForm.js';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router-dom';
+import styles from './Profile.module.css';
+import FavouriteStationsList from '../FavouriteStationsList/FavouriteStationsList';
 
 const Profile = () => {
   const { store } = useContext(Context);
@@ -17,12 +19,9 @@ const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModal, setModal] = useState(false);
-  if (store.isLoading) {
-    return <div>Загрузка.....</div>;
-  }
-  /* debugger; */
-  const editProfile = (e, id) => {
-    e.preventDefault();
+  const [isFavourite, setIsFavourite] = useState(false);
+
+  const editProfile = () => {
     setIsEdit(true);
     setModal(true);
   };
@@ -34,19 +33,38 @@ const Profile = () => {
         values.name,
         values.surname,
         values.email,
-        values.phone
+        values.phone,
       )
       .then(() => {
         if (store.isError) {
           alert(store.isError);
           setOpen(true);
         } else {
-          alert("Edit");
+          alert('Edit');
           setModal(false);
         }
       });
     setOpen(false);
   };
+
+  const favouriteHandler = useCallback(() => {
+    setIsFavourite(!isFavourite);
+    setIsPersonalData(false);
+  }, [isFavourite]);
+
+  const dataHandler = useCallback(() => {
+    setIsPersonalData(!isPersonalData);
+    setIsFavourite(false);
+  }, [isPersonalData]);
+
+  if (store.isLoading) {
+    return <div>Загрузка.....</div>;
+  }
+
+  const fullName = `${store.user.name + ' ' + store.user.surname}`;
+  const isAccountActivated = store.user.isActivated
+    ? 'Акаунт подтвержден по почте'
+    : 'Подтвердите акаунт';
 
   return (
     <>
@@ -54,52 +72,39 @@ const Profile = () => {
       <Container
         maxWidth={false}
         minWidth={false}
-        sx={{ width: "90%", marginTop: "50px" }}
+        sx={{ width: '90%', marginTop: '50px' }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "space-between",
-              marginBottom: "50px",
-            }}
-          >
-            <Button
-              variant="outlined"
-              onClick={() => setIsPersonalData(!isPersonalData)}
-            >
+        <div className={styles.container}>
+          <div className={styles.wrapper}>
+            <Button variant="outlined" onClick={dataHandler}>
               Personal Data
             </Button>
             <Button variant="outlined">Statistics</Button>
-            <Button variant="outlined">Favourite</Button>
+            <Button variant="outlined" onClick={favouriteHandler}>
+              Favourite
+            </Button>
           </div>
-          <p>Profile</p>
-          <p>{`Hi,${store.user.name + " " + store.user.surname}`}</p>
-          <p>
-            {store.user.isActivated
-              ? "Акаунт подтвержден по почте"
-              : "Подтвердите акаунт"}
-          </p>
-          <img src={car} alt="car" style={{ height: "15rem" }} />
-          <p>Car:{store.user.car ? store.user.car : " No information"}</p>
-          {isPersonalData && <PersonalData editProfile={editProfile} />}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <p>{`Hi,${fullName}`}</p>
+              <p>{isAccountActivated}</p>
+              <img src={car} alt="car" className={styles.image} />
+              <p>Car:{store.user.car ? store.user.car : ' No information'}</p>
+            </div>
+            <div>
+              {isPersonalData && <PersonalData editProfile={editProfile} />}
+              {isFavourite && <FavouriteStationsList />}
+            </div>
+          </div>
         </div>
-        <Link style={{ textDecoration: "none" }} to={"/"}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-              marginTop: "30px",
-            }}
-          >
+        <Link className={styles.link} to={'/'}>
+          <div className={styles.gohome}>
             <KeyboardBackspaceIcon />
             <p>Go Home</p>
           </div>

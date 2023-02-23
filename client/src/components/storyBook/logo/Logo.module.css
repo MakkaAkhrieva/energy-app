@@ -1,0 +1,7 @@
+.wrapper {
+  display: flex;
+}
+.link {
+  text-decoration: none;
+  color: #0ab28b;
+}

@@ -6,6 +6,7 @@ export default class UserDto {
   name;
   surname;
   phone;
+  favourites;
 
   constructor(model) {
     this.email = model.email;
@@ -15,5 +16,6 @@ export default class UserDto {
     this.name = model.name;
     this.surname = model.surname;
     this.phone = model.phone;
+    this.favourites = model.favourites;
   }
 }
