@@ -11,6 +11,10 @@ export const Modal = ({ isVisible = false, title, onClose, component }) => {
     }
   };
 
+  const handleChangeDefaoutBehaivour = (event) => {
+    event.stopPropagation();
+  };
+
   useEffect(() => {
     document.addEventListener("keydown", keydownHandler);
     return () => document.removeEventListener("keydown", keydownHandler);
@@ -20,7 +24,7 @@ export const Modal = ({ isVisible = false, title, onClose, component }) => {
     <div className={styles.modal} onClick={onClose}>
       <div
         className={styles.modal_dialog}
-        onClick={(event) => event.stopPropagation()}
+        onClick={handleChangeDefaoutBehaivour}
       >
         <div className={styles.modal_header}>
           <h3 className={styles.modal_title}>{title}</h3>

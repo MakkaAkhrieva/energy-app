@@ -22,7 +22,6 @@ const ProfileHeader = () => {
       >
         <div className={styles.header_wrapper}>
           <Logo />
-
           <LogInOutButton name={"Log out"} link={"/"} onClick={logOut} />
         </div>
       </Container>

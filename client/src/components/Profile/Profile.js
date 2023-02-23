@@ -62,6 +62,10 @@ const Profile = () => {
   }
 
   const fullName = `${store.user.name + " " + store.user.surname}`;
+  const isAccountActivated = store.user.isActivated
+    ? "Акаунт подтвержден по почте"
+    : "Подтвердите акаунт";
+
   return (
     <>
       <ProfileHeader />
@@ -89,11 +93,7 @@ const Profile = () => {
               }}
             >
               <p>{`Hi,${fullName}`}</p>
-              <p>
-                {store.user.isActivated
-                  ? "Акаунт подтвержден по почте"
-                  : "Подтвердите акаунт"}
-              </p>
+              <p>{isAccountActivated}</p>
               <img src={car} alt="car" className={styles.image} />
               <p>Car:{store.user.car ? store.user.car : " No information"}</p>
             </div>

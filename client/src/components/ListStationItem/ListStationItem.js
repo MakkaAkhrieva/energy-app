@@ -6,7 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index.js";
 
-const ListStationItem = ({ station, setModal, setEditId }) => {
+const ListStationItem = ({ station, setEditId, toggleModalVisibility }) => {
   const { store } = useContext(Context);
   const deleteStation = () => {
     store.removeStation(station._id).then(() => {
@@ -19,7 +19,7 @@ const ListStationItem = ({ station, setModal, setEditId }) => {
   };
 
   const editStation = () => {
-    setModal(true);
+    toggleModalVisibility();
     setEditId(station._id);
   };
 

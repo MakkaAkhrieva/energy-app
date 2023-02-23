@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import styles from "./AdminLocationBoard.module.css";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index.js";
@@ -16,6 +16,10 @@ const AdminLocationBoard = () => {
     setModal(false);
   };
 
+  const toggleModalVisibility = useCallback(() => {
+    setModal(!isModal);
+  }, [isModal]);
+
   return (
     <>
       <div className={styles.container}>
@@ -26,7 +30,7 @@ const AdminLocationBoard = () => {
               <ListStationItem
                 station={station}
                 setEditId={setEditId}
-                setModal={setModal}
+                toggleModalVisibility={toggleModalVisibility}
               />
             );
           })}
@@ -37,7 +41,7 @@ const AdminLocationBoard = () => {
         title="Edit station"
         component={<AddForm editId={editId} onClose={onClose} />}
         footer={<button>Cancel</button>}
-        onClose={() => setModal(false)}
+        onClose={toggleModalVisibility}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useContext, useMemo } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -48,12 +48,12 @@ const MapInfoMenu = ({
       store.user.favourites.find(
         (station) => station._id === selectedMarker._id
       ),
-    [selectedMarker, store.favouriteStations, store.user.favourites]
+    [selectedMarker._id, store.user.favourites]
   );
 
   const FavoriteIconColor = isFavourite ? "red" : "grey";
 
-  const onFavouriteToggle = () => {
+  const onFavouriteToggle = useCallback(() => {
     const favourite = store.favouriteStations.find(
       (station) => station._id === selectedMarker._id
     );
@@ -71,7 +71,7 @@ const MapInfoMenu = ({
           alert("Edit");
         }
       });
-  };
+  }, [store.favouriteStations, selectedMarker._id, store.user.id]);
 
   const makeRoute = () => {
     window.location.href = `https://www.google.com/maps/dir/${center.lat},${center.lng}/${selectedMarker.location.lat},${selectedMarker.location.lng}`;
