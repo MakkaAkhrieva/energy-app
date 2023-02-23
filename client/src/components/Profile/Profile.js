@@ -1,17 +1,17 @@
-import { Container } from "@mui/system";
-import React, { useCallback, useContext, useState } from "react";
-import car from "./car.png";
-import { Context } from "../../index.js";
-import { observer } from "mobx-react-lite";
-import ProfileHeader from "../ProfileHeader/ProfileHeader.js";
-import Button from "@mui/material/Button";
-import PersonalData from "../PersonalData/PersonalData";
-import { Modal } from "../Modal/Modal";
-import RegistrationForm from "../RegistrationForm/RegistrationForm.js";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Navigate, Link } from "react-router-dom";
-import styles from "./Profile.module.css";
-import FavouriteStationsList from "../FavouriteStationsList/FavouriteStationsList";
+import { Container } from '@mui/system';
+import React, { useCallback, useContext, useState } from 'react';
+import car from './car.png';
+import { Context } from '../../index.js';
+import { observer } from 'mobx-react-lite';
+import ProfileHeader from '../ProfileHeader/ProfileHeader.js';
+import Button from '@mui/material/Button';
+import PersonalData from '../PersonalData/PersonalData';
+import { Modal } from '../Modal/Modal';
+import RegistrationForm from '../RegistrationForm/RegistrationForm.js';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Link } from 'react-router-dom';
+import styles from './Profile.module.css';
+import FavouriteStationsList from '../FavouriteStationsList/FavouriteStationsList';
 
 const Profile = () => {
   const { store } = useContext(Context);
@@ -33,14 +33,14 @@ const Profile = () => {
         values.name,
         values.surname,
         values.email,
-        values.phone
+        values.phone,
       )
       .then(() => {
         if (store.isError) {
           alert(store.isError);
           setOpen(true);
         } else {
-          alert("Edit");
+          alert('Edit');
           setModal(false);
         }
       });
@@ -61,10 +61,10 @@ const Profile = () => {
     return <div>Загрузка.....</div>;
   }
 
-  const fullName = `${store.user.name + " " + store.user.surname}`;
+  const fullName = `${store.user.name + ' ' + store.user.surname}`;
   const isAccountActivated = store.user.isActivated
-    ? "Акаунт подтвержден по почте"
-    : "Подтвердите акаунт";
+    ? 'Акаунт подтвержден по почте'
+    : 'Подтвердите акаунт';
 
   return (
     <>
@@ -72,7 +72,7 @@ const Profile = () => {
       <Container
         maxWidth={false}
         minWidth={false}
-        sx={{ width: "90%", marginTop: "50px" }}
+        sx={{ width: '90%', marginTop: '50px' }}
       >
         <div className={styles.container}>
           <div className={styles.wrapper}>
@@ -84,18 +84,18 @@ const Profile = () => {
               Favourite
             </Button>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
             >
               <p>{`Hi,${fullName}`}</p>
               <p>{isAccountActivated}</p>
               <img src={car} alt="car" className={styles.image} />
-              <p>Car:{store.user.car ? store.user.car : " No information"}</p>
+              <p>Car:{store.user.car ? store.user.car : ' No information'}</p>
             </div>
             <div>
               {isPersonalData && <PersonalData editProfile={editProfile} />}
@@ -103,7 +103,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <Link className={styles.link} to={"/"}>
+        <Link className={styles.link} to={'/'}>
           <div className={styles.gohome}>
             <KeyboardBackspaceIcon />
             <p>Go Home</p>

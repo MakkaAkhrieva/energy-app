@@ -16,7 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   boxShadow:
     "rgb(255 255 255 / 70%) -2px -2px 4px, rgb(208 208 230) 2px 2px 4px",
-  padding: "10px",
+  /* padding: "10px", */
   minWidth: "fit-content",
 }));
 
