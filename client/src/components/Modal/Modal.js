@@ -18,7 +18,10 @@ export const Modal = ({ isVisible = false, title, onClose, component }) => {
 
   return !isVisible ? null : (
     <div className={styles.modal} onClick={onClose}>
-      <div className={styles.modal_dialog} onClick={(event) => event.stopPropagation()}>
+      <div
+        className={styles.modal_dialog}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.modal_header}>
           <h3 className={styles.modal_title}>{title}</h3>
           <span className={styles.modal_close} onClick={onClose}>

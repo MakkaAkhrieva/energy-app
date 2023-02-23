@@ -26,7 +26,6 @@ export const CalculateMenu = ({
   };
 
   useEffect(() => {
-    setOrigin(`${centerAddress}`);
     setDestintion(`${selectedMarker.address}`);
   }, [centerAddress, selectedMarker.address]);
 
@@ -55,6 +54,13 @@ export const CalculateMenu = ({
   }
   const onOriginHandler = (event) => {
     setOrigin(event.target.value);
+  };
+
+  const onClose = () => {
+    setIsCalculateRoute(false);
+    setDirectionsResponse(null);
+    setDistance(null);
+    setDuration(null);
   };
 
   const onDestinationhandler = (event) => {
@@ -90,6 +96,7 @@ export const CalculateMenu = ({
                 variant="standard"
                 onChange={onDestinationhandler}
                 value={destination}
+                disabled={true}
               />
             </Autocomplete>
           </Grid>
@@ -109,16 +116,7 @@ export const CalculateMenu = ({
                 <Button>Route</Button>
                 <DirectionsCarIcon sx={{ color: "red" }} />
               </div>
-              <Button
-                onClick={() => {
-                  setIsCalculateRoute(false);
-                  setDirectionsResponse(null);
-                  setDistance(null);
-                  setDuration(null);
-                }}
-              >
-                Close
-              </Button>
+              <Button onClick={onClose}>Close</Button>
             </div>
           </Grid>
         </Grid>

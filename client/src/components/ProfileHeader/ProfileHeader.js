@@ -9,6 +9,10 @@ import { Logo } from "../storyBook/logo/Logo";
 const ProfileHeader = () => {
   const { store } = useContext(Context);
 
+  const logOut = () => {
+    store.logout();
+  };
+
   return (
     <div className={styles.container}>
       <Container
@@ -19,11 +23,7 @@ const ProfileHeader = () => {
         <div className={styles.header_wrapper}>
           <Logo />
 
-          <LogInOutButton
-            name={"Log out"}
-            link={"/"}
-            onClick={() => store.logout()}
-          />
+          <LogInOutButton name={"Log out"} link={"/"} onClick={logOut} />
         </div>
       </Container>
     </div>

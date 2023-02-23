@@ -4,14 +4,12 @@ import MapService from "../services/MapService";
 import axios from "axios";
 import UserService from "../services/UserService.js";
 import { API_URL } from "../http";
-import { toJS } from "mobx";
-import { observable } from "mobx";
 
 export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
-  isError = "";
+  isError = false;
   stations = [];
   favouriteStations = [];
 
@@ -75,7 +73,6 @@ export default class Store {
         phone
       );
       this.setUser({ ...response?.data?.user });
-
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
@@ -85,11 +82,8 @@ export default class Store {
   async editUserFavourites(id, favourites) {
     try {
       const response = await UserService.editUserFavourites(id, favourites);
-      console.log("response", response);
-      this.setUser({ ...response?.data?.user });
+      this.setUser(response?.data?.user);
       this.favouriteStations = [...response?.data?.user.favourites];
-      console.log("favourites", toJS(this.favouriteStations));
-
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
@@ -100,7 +94,6 @@ export default class Store {
     try {
       await MapService.removeStation(id);
       this.stations = this.stations.filter((item) => item._id !== id);
-
       this.setError(false);
     } catch (error) {
       this.setError(error.response?.data?.message);
@@ -121,7 +114,6 @@ export default class Store {
     this.setLoading(true);
     try {
       const response = await AuthService.login(email, password);
-
       localStorage.setItem("token", response.data.accessToken);
       localStorage.setItem("role", response.data.user.role);
       this.setAuth(true);
@@ -160,7 +152,6 @@ export default class Store {
   async logout() {
     try {
       const response = await AuthService.logout();
-
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       this.setAuth(false);

@@ -101,7 +101,7 @@ const PersonalData = ({ editProfile }) => {
       <Button
         variant="outlined"
         style={{ marginTop: "20px" }}
-        onClick={(event) => editProfile(event)}
+        onClick={editProfile}
       >
         Edit
       </Button>

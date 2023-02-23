@@ -3,55 +3,31 @@ import styles from "./AdminLocationBoard.module.css";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index.js";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import EditLocation from "@mui/icons-material/EditLocation";
 import { AddForm } from "../AddForm/AddForm";
 import { Modal } from "../Modal/Modal";
+import ListStationItem from "../ListStationItem/ListStationItem";
 
 const AdminLocationBoard = () => {
   const { store } = useContext(Context);
   const [isModal, setModal] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  const deleteStation = (event, id) => {
-    event.preventDefault();
-    store.removeStation(id).then(() => {
-      if (store.isError) {
-        alert(store.isError);
-      } else {
-        alert("Deleted");
-      }
-    });
-  };
-
-  const editStation = (event, id) => {
-    event.preventDefault();
-    setModal(true);
-    setEditId(id);
+  const onClose = () => {
+    setModal(false);
   };
 
   return (
     <>
       <div className={styles.container}>
-        <p>locations</p>
+        <p>Locations</p>
         <List>
           {store.stations.map((station) => {
             return (
-              <ListItem>
-                <ListItemText
-                  primary={`${station.name}`}
-                  secondary={`lat:${station.location.lat} lng:${station.location.lng}`}
-                />
-                <DeleteOutlineIcon
-                  onClick={(event) => deleteStation(event, station._id)}
-                />
-                <EditLocation
-                  onClick={(event) => editStation(event, station._id)}
-                  sx={{ color: "#0AB28B" }}
-                />
-              </ListItem>
+              <ListStationItem
+                station={station}
+                setEditId={setEditId}
+                setModal={setModal}
+              />
             );
           })}
         </List>
@@ -59,7 +35,7 @@ const AdminLocationBoard = () => {
       <Modal
         isVisible={isModal}
         title="Edit station"
-        component={<AddForm editId={editId} onClose={() => setModal(false)} />}
+        component={<AddForm editId={editId} onClose={onClose} />}
         footer={<button>Cancel</button>}
         onClose={() => setModal(false)}
       />

@@ -18,13 +18,17 @@ export const AddForm = ({ editId, onClose }) => {
     });
   };
 
+  const nameHandler = (event) => {
+    setName(event.target.value);
+  };
+
   return (
     <form onSubmit={addStation}>
       <input
         type="text"
         placeholder="name"
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={nameHandler}
       />
       <button type="submit">Edit station</button>
     </form>

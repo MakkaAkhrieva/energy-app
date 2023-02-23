@@ -64,21 +64,18 @@ const MapContainer = () => {
         Geocode.fromLatLng(currentLocation.lat, currentLocation.lng)
           .then(
             (response) => {
-              console.log("resp2", response);
               const address = response.results[0].formatted_address;
               return address;
             },
             (error) => {
-              console.error("fghdfgh", error);
+              console.error("error", error);
             }
           )
           .then((response) => {
-            console.log("resp", response);
             setCenterAddress(response);
           });
       })
       .catch((defaultLocation) => {
-        console.log("catch");
         setCenter(defaultLocation);
       });
   }, []);

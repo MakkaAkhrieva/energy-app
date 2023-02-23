@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState, useContext, useMemo } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -17,7 +17,6 @@ import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
 import { Button } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-import { toJS } from "mobx";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -44,27 +43,20 @@ const MapInfoMenu = ({
     setExpanded(!expanded);
   };
 
-  const isFavourite = useMemo(() => {
-    const station = store.user.favourites.find(
-      (station) => station._id === selectedMarker._id
-    );
-    console.log("data", station);
-    return station;
-  }, [selectedMarker, store.favouriteStations, store.user.favourites]);
+  const isFavourite = useMemo(
+    () =>
+      store.user.favourites.find(
+        (station) => station._id === selectedMarker._id
+      ),
+    [selectedMarker, store.favouriteStations, store.user.favourites]
+  );
 
-  console.log("isFavourite", isFavourite);
-
-  useEffect(() => {
-    console.log("user", toJS(store.user));
-    console.log("selected", toJS(selectedMarker));
-  });
+  const FavoriteIconColor = isFavourite ? "red" : "grey";
 
   const onFavouriteToggle = () => {
-    console.log(toJS(selectedMarker));
     const favourite = store.favouriteStations.find(
       (station) => station._id === selectedMarker._id
     );
-    console.log("favouriteId", toJS(favourite));
     if (favourite) {
       store.deleteFavouriteStation(favourite._id);
     } else {
@@ -83,6 +75,15 @@ const MapInfoMenu = ({
 
   const makeRoute = () => {
     window.location.href = `https://www.google.com/maps/dir/${center.lat},${center.lng}/${selectedMarker.location.lat},${selectedMarker.location.lng}`;
+  };
+
+  const calculateRouteHandler = () => {
+    setIsCalculateRoute(true);
+  };
+
+  const onClose = () => {
+    setIsMenuOpen(false);
+    setSelectedMarker("");
   };
 
   return (
@@ -116,7 +117,7 @@ const MapInfoMenu = ({
         </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites" onClick={onFavouriteToggle}>
-            <FavoriteIcon sx={{ color: isFavourite ? "red" : "grey" }} />
+            <FavoriteIcon sx={{ color: FavoriteIconColor }} />
           </IconButton>
           <ExpandMore
             expand={expanded}
@@ -138,18 +139,9 @@ const MapInfoMenu = ({
             </Typography>
           </CardContent>
         </Collapse>
-        <Button
-          onClick={() => {
-            setIsMenuOpen(false);
-            setSelectedMarker("");
-          }}
-        >
-          Close
-        </Button>
-        <Button onClick={() => makeRoute()}>Route</Button>
-        <Button onClick={() => setIsCalculateRoute(true)}>
-          Calculate Route
-        </Button>
+        <Button onClick={onClose}>Close</Button>
+        <Button onClick={makeRoute}>Route</Button>
+        <Button onClick={calculateRouteHandler}>Calculate Route</Button>
       </Card>
     </div>
   );

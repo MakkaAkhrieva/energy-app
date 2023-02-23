@@ -1,5 +1,5 @@
 import { Container } from "@mui/system";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import car from "./car.png";
 import { Context } from "../../index.js";
 import { observer } from "mobx-react-lite";
@@ -20,12 +20,8 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [isModal, setModal] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
-  if (store.isLoading) {
-    return <div>Загрузка.....</div>;
-  }
-  /* debugger; */
-  const editProfile = (event, id) => {
-    event.preventDefault();
+
+  const editProfile = () => {
     setIsEdit(true);
     setModal(true);
   };
@@ -51,15 +47,21 @@ const Profile = () => {
     setOpen(false);
   };
 
-  const dataHandler = () => {
-    setIsPersonalData(!isPersonalData);
-    setIsFavourite(false);
-  };
-
-  const favouriteHandler = () => {
+  const favouriteHandler = useCallback(() => {
     setIsFavourite(!isFavourite);
     setIsPersonalData(false);
-  };
+  }, [isFavourite]);
+
+  const dataHandler = useCallback(() => {
+    setIsPersonalData(!isPersonalData);
+    setIsFavourite(false);
+  }, [isPersonalData]);
+
+  if (store.isLoading) {
+    return <div>Загрузка.....</div>;
+  }
+
+  const fullName = `${store.user.name + " " + store.user.surname}`;
   return (
     <>
       <ProfileHeader />
@@ -86,7 +88,7 @@ const Profile = () => {
                 alignItems: "center",
               }}
             >
-              <p>{`Hi,${store.user.name + " " + store.user.surname}`}</p>
+              <p>{`Hi,${fullName}`}</p>
               <p>
                 {store.user.isActivated
                   ? "Акаунт подтвержден по почте"

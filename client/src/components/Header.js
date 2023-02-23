@@ -1,8 +1,6 @@
 import Container from "@mui/material/Container";
 import styles from "./Header.module.css";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
 import React, { useContext } from "react";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { Context } from "../index.js";
@@ -12,6 +10,10 @@ import { Logo } from "./storyBook/logo/Logo";
 
 const Header = () => {
   const { store } = useContext(Context);
+
+  const logOut = () => {
+    store.logout();
+  };
   return (
     <div className={styles.container}>
       <Container
@@ -31,11 +33,7 @@ const Header = () => {
                   <p className={styles.profile}>{store.user.email}</p>
                 </div>
               </Link>
-              <LogInOutButton
-                name={"Log out"}
-                link={"/"}
-                onClick={() => store.logout()}
-              />
+              <LogInOutButton name={"Log out"} link={"/"} onClick={logOut} />
             </div>
           )}
         </div>
