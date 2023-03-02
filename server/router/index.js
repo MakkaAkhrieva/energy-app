@@ -18,10 +18,11 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/stations", stationController.getStations);
+router.get("/station/:id", authMiddleware, stationController.getStation);
 router.post(
   "/station",
-  authMiddleware,
-  adminMiddleware,
+  /*   authMiddleware,
+  adminMiddleware, */
   stationController.addStation
 );
 router.get("/users", authMiddleware, adminMiddleware, userController.getUsers);
@@ -44,4 +45,5 @@ router.patch(
   userController.editUserFavourites
 );
 
+router.get("/stations", stationController.dropStations);
 export default router;

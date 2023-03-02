@@ -19,4 +19,10 @@ export default class MapService {
       name: name,
     });
   }
+  static async getStation(id) {
+    return await $api.get(`/station/${id}`);
+  }
+  static async dropStations() {
+    return await $api.get("/stations");
+  }
 }

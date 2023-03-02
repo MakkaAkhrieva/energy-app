@@ -6,6 +6,7 @@ import Registration from "../../pages/Registration/Registration.js";
 import { appRoutes } from "./routes.js";
 import { userRoles } from "./constant.js";
 import Profile from "../../components/Profile/Profile.js";
+import Charging from "../../pages/Charging/Charging.js";
 
 export const routesConfig = [
   {
@@ -39,6 +40,12 @@ export const routesConfig = [
   {
     path: appRoutes.USER_PROFILE,
     element: <Profile />,
+    isProtected: true,
+    expectedRole: userRoles.user,
+  },
+  {
+    path: appRoutes.USER_CHARGING,
+    element: <Charging />,
     isProtected: true,
     expectedRole: userRoles.user,
   },

@@ -23,6 +23,16 @@ export const getStations = async (req, res, next) => {
   }
 };
 
+export const getStation = async (req, res, next) => {
+  try {
+    const stationId = req.params.id;
+    const station = await stationService.getStation(stationId);
+    res.json(station);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const remove = async (req, res, next) => {
   try {
     const stationId = req.params.id;
@@ -40,6 +50,14 @@ export const editStation = async (req, res, next) => {
     const { name } = req.body;
     const editStation = await stationService.editStation(stationId, name);
     res.json(editStation);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const dropStations = async (req, res, next) => {
+  try {
+    await stationService.dropStations();
   } catch (error) {
     next(error);
   }

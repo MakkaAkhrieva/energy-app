@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export const Logo = () => {
   return (
     <div className={styles.wrapper}>
-      <EnergySavingsLeafIcon />
+      <EnergySavingsLeafIcon sx={{ color: "#0ab28b" }} />
       <Link className={styles.link} to={"/"}>
         ENERGY APP
       </Link>
