@@ -9,7 +9,6 @@ import styles from "../../pages/Home/Home.module.css";
 import { useJsApiLoader } from "@react-google-maps/api";
 import Geocode from "react-geocode";
 import { useHttp } from "../hooks/http.hook";
-import { toJS } from "mobx";
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 

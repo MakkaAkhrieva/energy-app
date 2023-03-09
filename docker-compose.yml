@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  client-app:
+    container_name: client-app
+    build:
+      context: ./client
+
+  stationclient-app:
+    container_name: stationclient-app
+    build:
+      context: ./stationclient
+
+  orchestrator:
+    container_name: orchestrator
+    ports:
+      - 80:80
+    depends_on:
+      - client-app
+      - stationclient-app
+    build:
+      context: .

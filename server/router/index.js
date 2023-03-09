@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import authMiddleware from "../middlewares/auth-middleware.js";
 import adminMiddleware from "../middlewares/admin-middleware.js";
 import * as stationController from "../controllers/station-controller.js";
+import * as questionController from "../controllers/questions-controller.js";
 
 const router = new Router();
 
@@ -46,4 +47,6 @@ router.patch(
 );
 
 router.get("/stations", stationController.dropStations);
+router.get("/questions", questionController.getQuestions);
+router.post("/question", questionController.addQuestion);
 export default router;

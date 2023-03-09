@@ -9,6 +9,7 @@ const FavouriteStationsList = () => {
   const { store } = useContext(Context);
 
   return (
+    
     <List>
       {store.user.favourites.map((station) => {
         return <FavouriteListItem station={station} />;

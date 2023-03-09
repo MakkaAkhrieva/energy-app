@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { Link } from "react-router-dom";
+import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 
 const ExpandMore = styled((props) => {
   const { ...other } = props;
@@ -43,6 +44,11 @@ const MapInfoMenu = ({
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  useEffect(() => {
+    localStorage.setItem("stationid", selectedMarker.id);
+    console.log("selectedid", selectedMarker.id);
+  }, [selectedMarker, setSelectedMarker]);
 
   const isFavourite = useMemo(
     () =>
@@ -146,12 +152,26 @@ const MapInfoMenu = ({
             </Typography>
           </CardContent>
         </Collapse>
-        <Button onClick={onClose}>Close</Button>
-        <Button onClick={makeRoute}>Route</Button>
-        <Button onClick={calculateRouteHandler}>Calculate Route</Button>
-        <Link to={`/user/charging/${selectedMarker._id}`}>
-          <Button>Start charging</Button>
-        </Link>
+        <div>
+          <Button onClick={onClose}>Close</Button>
+          <Button onClick={makeRoute}>Route</Button>
+          <Button onClick={calculateRouteHandler}>Calculate Route</Button>
+          <Link to={`/user/charging/${selectedMarker._id}`}>
+            <Button>Start charging</Button>
+          </Link>
+          <Button
+            className={styles.support}
+            sx={{ color: "#0AB28B" }}
+            endIcon={<HeadsetMicIcon />}
+          >
+            <a
+              style={{ textDecoration: "none", color: "#0AB28B" }}
+              href={`/stationclient/${selectedMarker._id}`}
+            >
+              Support service
+            </a>
+          </Button>
+        </div>
       </Card>
     </div>
   );
