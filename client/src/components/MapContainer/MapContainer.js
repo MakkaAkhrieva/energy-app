@@ -1,4 +1,3 @@
-import Container from "@mui/material/Container";
 import Maps from "../Map/Maps";
 import { getBrowserLocation } from "../../utils/geo";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import styles from "../../pages/Home/Home.module.css";
 import { useJsApiLoader } from "@react-google-maps/api";
 import Geocode from "react-geocode";
+import { useHttp } from "../hooks/http.hook";
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -25,11 +25,43 @@ const MapContainer = () => {
   const { store } = useContext(Context);
   const [mode, setMode] = useState(MODES.MOVE);
   const [isBtnMarkerSelected, setIsBtnMarkerSelected] = useState(false);
+  const { request } = useHttp();
 
   Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
   Geocode.setLanguage("rus");
 
   const isAdmin = store.user.role === "admin";
+
+  const isPut = localStorage.getItem("put");
+
+  const _transformStations = (station) => {
+    return {
+      name: station.name,
+      location: { lat: station.latitude, lng: station.longitude },
+      address: `ул. ${station.street} ${station.house}, ${station.city} , Беларусь`,
+      plugType: station.connectors[0].connectorName,
+    };
+  };
+
+  useEffect(() => {
+    store.getStations();
+    async function fetchData() {
+      const res = await request(
+        `https://apigateway.malankabn.by/central-system/api/v1/locations/map/points?userId=768940c7-49e3-44fa-9959-bd2210e471e4&connectorMaxPower=350&",
+          )`,
+      );
+      const data = res.map(_transformStations);
+      data.map((station) => {
+        const lat = station.location.lat;
+        const lng = station.location.lng;
+        store.addStation(station.name, { lat, lng }, station.address);
+      });
+    }
+    !isPut && fetchData();
+
+    localStorage.setItem("put", true);
+
+  }, []);
 
   const toggleMode = useCallback(() => {
     switch (mode) {
@@ -69,7 +101,7 @@ const MapContainer = () => {
             },
             (error) => {
               console.error("error", error);
-            }
+            },
           )
           .then((response) => {
             setCenterAddress(response);

@@ -25,6 +25,11 @@ export const getStations = async () => {
   return stations;
 };
 
+export const getStation = async (id) => {
+  const station = await stationsModel.findById(id);
+  return station;
+};
+
 export const removeStation = async (stationId) => {
   const station = await stationsModel.findByIdAndDelete(stationId);
   if (!station) {
@@ -42,4 +47,9 @@ export const editStation = async (stationId, name) => {
     throw ApiError.ErrorResponse(500, "Станция не найдена");
   }
   return station;
+};
+
+export const dropStations = async () => {
+  await stationsModel.collection.drop();
+  console.log("drop");
 };

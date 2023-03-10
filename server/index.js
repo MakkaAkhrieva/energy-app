@@ -15,9 +15,16 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: [
+      process.env.CLIENT_URL,
+      process.env.CLIENT_STATION_URL,
+      process.env.CLIENT_81,
+      process.env.CLIENT_82,
+      process.env.CLIENT_80,
+    ],
   })
 );
+
 app.use("/api", router);
 app.use(errorMidleware);
 

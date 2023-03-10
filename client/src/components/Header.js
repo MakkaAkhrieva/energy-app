@@ -5,8 +5,8 @@ import React, { useContext } from "react";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { Context } from "../index.js";
 import { observer } from "mobx-react-lite";
-import { LogInOutButton } from "./storyBook/buttons/Login_Logout_Btns";
-import { Logo } from "./storyBook/logo/Logo";
+import { LogInOutButton } from "./storyBook/buttons/Login_Logout_Btns.js";
+import { Logo } from "./storyBook/logo/Logo.js";
 
 const Header = () => {
   const { store } = useContext(Context);

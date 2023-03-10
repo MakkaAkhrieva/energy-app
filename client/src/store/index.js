@@ -12,6 +12,7 @@ export default class Store {
   isError = false;
   stations = [];
   favouriteStations = [];
+  station = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -39,7 +40,7 @@ export default class Store {
 
   deleteFavouriteStation(favouriteId) {
     this.favouriteStations = this.user.favourites.filter(
-      (station) => station._id !== favouriteId
+      (station) => station._id !== favouriteId,
     );
   }
 
@@ -63,6 +64,16 @@ export default class Store {
     }
   }
 
+  async editStations(id, name, location, address) {
+    try {
+      await MapService.editStations(id, name, location, address);
+      this.getStations();
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+    }
+  }
+
   async editUser(id, name, surname, email, phone) {
     try {
       const response = await UserService.editUser(
@@ -70,7 +81,7 @@ export default class Store {
         name,
         surname,
         email,
-        phone
+        phone,
       );
       this.setUser({ ...response?.data?.user });
       this.setError(false);
@@ -100,11 +111,30 @@ export default class Store {
     }
   }
 
+  async dropStations() {
+    try {
+      await MapService.dropStations();
+      this.stations = [];
+      this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+    }
+  }
+
   async getStations() {
     try {
       const response = await MapService.fetchMaps();
       this.stations = [...response.data];
       this.setError(false);
+    } catch (error) {
+      this.setError(error.response?.data?.message);
+    }
+  }
+
+  async getStation(id) {
+    try {
+      const response = await MapService.getStation(id);
+      this.station = response.data;
     } catch (error) {
       this.setError(error.response?.data?.message);
     }
@@ -134,7 +164,7 @@ export default class Store {
         password,
         name,
         surname,
-        phone
+        phone,
       );
 
       localStorage.setItem("token", response.data.accessToken);

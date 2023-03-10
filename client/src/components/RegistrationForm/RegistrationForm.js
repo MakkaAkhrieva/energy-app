@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { MyTextInput } from "../../components/storyBook/input/input";
@@ -18,6 +18,7 @@ const RegistrationForm = ({
   const { store } = useContext(Context);
   const phoneRegExp =
     /(?:\+375|80)\s?\(?\d\d\)?\s?\d\d(?:\d[\-\s]\d\d[\-\s]\d\d|[\-\s]\d\d[\-\s]\d\d\d|\d{5})/;
+
   return (
     <Formik
       initialValues={
@@ -67,14 +68,14 @@ const RegistrationForm = ({
                 .min(8, "Password is too short - should be 8 chars minimum.")
                 .matches(
                   /[a-zA-Z]/,
-                  "Password can only contain Latin letters."
+                  "Password can only contain Latin letters.",
                 ),
               phone: Yup.string()
                 .required("Required")
                 .matches(phoneRegExp, "Phone number is not valid"),
             })
       }
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values) => {
         handleSubmit(values);
       }}
     >

@@ -4,6 +4,7 @@ import { body } from "express-validator";
 import authMiddleware from "../middlewares/auth-middleware.js";
 import adminMiddleware from "../middlewares/admin-middleware.js";
 import * as stationController from "../controllers/station-controller.js";
+import * as questionController from "../controllers/questions-controller.js";
 
 const router = new Router();
 
@@ -18,10 +19,11 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/stations", stationController.getStations);
+router.get("/station/:id", authMiddleware, stationController.getStation);
 router.post(
   "/station",
-  authMiddleware,
-  adminMiddleware,
+  /*   authMiddleware,
+  adminMiddleware, */
   stationController.addStation
 );
 router.get("/users", authMiddleware, adminMiddleware, userController.getUsers);
@@ -44,4 +46,7 @@ router.patch(
   userController.editUserFavourites
 );
 
+router.get("/stations", stationController.dropStations);
+router.get("/questions", questionController.getQuestions);
+router.post("/question", questionController.addQuestion);
 export default router;

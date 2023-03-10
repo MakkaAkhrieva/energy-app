@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -14,12 +14,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styles from "./MapInfoMenu.module.css";
 import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
+import { Link } from "react-router-dom";
+import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
+  const { ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
@@ -43,19 +45,23 @@ const MapInfoMenu = ({
     setExpanded(!expanded);
   };
 
+  useEffect(() => {
+    localStorage.setItem("stationid", selectedMarker.id);
+  }, [selectedMarker, setSelectedMarker]);
+
   const isFavourite = useMemo(
     () =>
       store.user.favourites.find(
-        (station) => station._id === selectedMarker._id
+        (station) => station._id === selectedMarker._id,
       ),
-    [selectedMarker._id, store.user.favourites]
+    [selectedMarker._id, store.user.favourites],
   );
 
   const FavoriteIconColor = isFavourite ? "red" : "grey";
 
   const onFavouriteToggle = useCallback(() => {
     const favourite = store.favouriteStations.find(
-      (station) => station._id === selectedMarker._id
+      (station) => station._id === selectedMarker._id,
     );
     if (favourite) {
       store.deleteFavouriteStation(favourite._id);
@@ -108,11 +114,17 @@ const MapInfoMenu = ({
           alt="Paella dish"
         />
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi
-            ad laboriosam magnam itaque officiis, placeat minus cum eos vitae,
-            mollitia nesciunt rem molestiae quidem, eius incidunt eaque nam.
-            Eveniet, dolorum?
+          <Typography variant="body2" color="text.primary">
+            Working hours:24h daily
+          </Typography>
+          <Typography variant="body2" color="text.primary">
+            Power:{selectedMarker.power} kw
+          </Typography>
+          <Typography variant="body2" color="text.primary">
+            Plug type:{selectedMarker.plugType}
+          </Typography>
+          <Typography variant="body2" color="text.primary">
+            Price:{selectedMarker.price} BYN for 1 kWh
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -139,9 +151,26 @@ const MapInfoMenu = ({
             </Typography>
           </CardContent>
         </Collapse>
-        <Button onClick={onClose}>Close</Button>
-        <Button onClick={makeRoute}>Route</Button>
-        <Button onClick={calculateRouteHandler}>Calculate Route</Button>
+        <div>
+          <Button onClick={onClose}>Close</Button>
+          <Button onClick={makeRoute}>Route</Button>
+          <Button onClick={calculateRouteHandler}>Calculate Route</Button>
+          <Link to={`/user/charging/${selectedMarker._id}`}>
+            <Button>Start charging</Button>
+          </Link>
+          <Button
+            className={styles.support}
+            sx={{ color: "#0AB28B" }}
+            endIcon={<HeadsetMicIcon />}
+          >
+            <a
+              style={{ textDecoration: "none", color: "#0AB28B" }}
+              href={`/stationclient/${selectedMarker._id}`}
+            >
+              Support service
+            </a>
+          </Button>
+        </div>
       </Card>
     </div>
   );
