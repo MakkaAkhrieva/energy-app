@@ -32,7 +32,6 @@ const MapContainer = () => {
 
   const isAdmin = store.user.role === "admin";
 
-  const update = document.cookie;
   const isPut = localStorage.getItem("put");
 
   const _transformStations = (station) => {
@@ -46,7 +45,6 @@ const MapContainer = () => {
 
   useEffect(() => {
     store.getStations();
-    /* document.cookie = "updateData=false; max-age=0"; */
     async function fetchData() {
       const res = await request(
         `https://apigateway.malankabn.by/central-system/api/v1/locations/map/points?userId=768940c7-49e3-44fa-9959-bd2210e471e4&connectorMaxPower=350&",
@@ -63,20 +61,6 @@ const MapContainer = () => {
 
     localStorage.setItem("put", true);
 
-    async function drop() {
-      store.dropStations();
-    }
-
-    function updateData() {
-      drop().then(fetchData());
-    }
-
-    update && updateData;
-
-    // +1 день от текущей даты
-    let date = new Date(Date.now() + 86400e3);
-    date = date.toUTCString();
-    document.cookie = "updateData=false; expires=" + date;
   }, []);
 
   const toggleMode = useCallback(() => {

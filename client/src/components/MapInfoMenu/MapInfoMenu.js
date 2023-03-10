@@ -47,7 +47,6 @@ const MapInfoMenu = ({
 
   useEffect(() => {
     localStorage.setItem("stationid", selectedMarker.id);
-    console.log("selectedid", selectedMarker.id);
   }, [selectedMarker, setSelectedMarker]);
 
   const isFavourite = useMemo(

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { useStopwatch } from "react-timer-hook";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -11,15 +11,15 @@ export const MyStopwatch = () => {
   const [time, setTime] = useState(null);
   const [price, setPrice] = useState(0);
 
-  const end = () => {
+  const end = useCallback(() => {
     pause();
     setTime(+minutes + +(seconds / 60).toFixed(2));
-  };
+  }, [minutes, seconds]);
 
-  const resetTime = () => {
+  const resetTime = useCallback(() => {
     reset();
     setPrice(0);
-  };
+  },[setPrice]);
 
   useEffect(() => {
     setPrice((store.station.power * time * store.station.price).toFixed(2));
